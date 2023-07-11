@@ -16,6 +16,6 @@ new DeployGitHubRoleStack(app, `${context.appName}DeployGitHubRoleStack`, {
 	},
 })
 
-// new MicroSaaSStack(app, 'MicroSaaSStack', {
-// 	env: { account: context.account, region: context.region },
-// })
+new MicroSaaSStack(app, 'MicroSaaSStack', {
+	env: { account: context.account, region: context.region },
+})
