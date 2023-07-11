@@ -1,0 +1,41 @@
+name: Deploy CDK Project
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  deploy_aws_cdk:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Assume role using OIDC
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: arn:aws:iam::842537737558:role/micro-saas-new-github-ci-role
+          aws-region: us-east-1
+
+      - name: cdk diff
+        run: cd backend && npx --prefix backend aws-cdk diff
+
+      - name: cdk deploy
+        run: cd backend && npx aws-cdk deploy --exclusively AppStack

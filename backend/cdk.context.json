@@ -1,0 +1,23 @@
+{
+	"globals": {
+		"account": "842537737558",
+		"appName": "micro-saas-new",
+		"appDescription": "A simple description",
+		"github": {
+			"username": "focusotter",
+			"repo": "micro-saas-new"
+		}
+	},
+	"environments": [
+		{
+			"branchName": "main",
+			"stage": "prod",
+			"region": "us-east-2"
+		},
+		{
+			"branchName": "develop",
+			"stage": "dev",
+			"region": "us-east-1"
+		}
+	]
+}
