@@ -158,4 +158,14 @@ Oh wait! I have to update my Github action so that it deploys the Hosting stack 
 
 ```
 
-Looks like it failed due to needing manual approval. Easy enough, I'll add the `--no-approve` flag.
+Looks like it failed due to needing manual approval.
+
+![failed-deploy-need-approval](./images/failed-deploy-need-approval.png)
+
+Easy enough, I'll add the `--no-approve` flag. Oh that flag didn't work. Thanks chatGPT, now I have to go look at the docs 😅
+
+Ok cool, it's just `--require-approval LEVEL` where `LEVEL` is an enum.
+
+![approval  level](./images/cdk-approval.png)
+
+`--require-approval never` is what I want
