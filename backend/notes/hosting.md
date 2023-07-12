@@ -235,9 +235,9 @@ Ok, a final test is to commit this updated markdown file, which will trigger ano
 
 Dang. It still triggered a deployment. _sigh_ to the docs I go.
 
-<!-- timecheck: 2:20 -->
+<!-- timecheck: 2:20am -->
 
-<!-- timecheck: 2:37 -->
+<!-- timecheck: 2:37am -->
 
 Found it...I hope!
 ![enable diff deploy](./images/enable-diff-deploy.png)
@@ -245,3 +245,18 @@ Found it...I hope!
 So looks like I just need to add AMPLIFY_DIFF_DEPLOY and set it to true.
 
 I'm going to add this in the console, then add it in code and see if the frontend gets triggered.
+
+It failed...but it did what it was supposed to 🧐
+
+The frontend was skipped, but now the backend was triggered and there is no Amplify backend...so it failed 😮
+
+![amplify diff log](./images/amplify-diff-log.png)
+
+![failed backend build](./images/failed-backend-build.png)
+
+> "No backend environment association found, continuing..."
+> ok, but not like that lol
+
+<!-- timecheck: 2:58am -->
+
+I think this is a good spot to call it a night.
