@@ -362,3 +362,10 @@ To solve this, I added `AMPLIFY_DIFF_DEPLOY` and setup a GitHub action to deploy
 Pausing here since this feels like something I need an Amplify employee to help me out on.
 
 <!-- timecheck: 12:24pm-->
+<!-- timecheck: 12:40pm-->
+
+After speaking with Sean Quinn, he recommended putting my backend deployment pipeline in the buildspec instead of using a GitHub action 🤯
+
+I didn't know this was possible. I'd obviously have to update the role for Amplify to allow that, but I just checked and the L2 construct _does_ expose a `role` property. This could significantly decrease ci/cd overhead.
+
+I'm going to refactor this, but there is still a bunch of learnings of things that happened so far, so I'm going to move this over to a `hosting-learnings` branch.
