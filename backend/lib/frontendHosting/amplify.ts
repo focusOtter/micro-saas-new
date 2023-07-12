@@ -66,7 +66,7 @@ export function createAmplifyHosting(
 		customRules: [
 			{
 				source: '/<*>',
-				target: '	/index.html',
+				target: '/index.html',
 				status: RedirectStatus.NOT_FOUND_REWRITE,
 			},
 		],
@@ -78,20 +78,26 @@ export function createAmplifyHosting(
 			version: 1,
 			applications: [
 				{
-					frontend: {
+					backend: {
 						phases: {
 							preBuild: {
+								commands: [],
+							},
+							build: {
 								commands: [
-									'pwd',
 									'cd ..',
-									'pwd',
 									'cd backend',
 									'npm ci',
 									'npx aws-cdk diff',
 									'npx aws-cdk deploy --require-approval never --exclusively MicroSaaSStack AmplifyHostingStack',
-									'cd ../frontend',
-									'npm ci',
 								],
+							},
+						},
+					},
+					frontend: {
+						phases: {
+							preBuild: {
+								commands: ['cd ../frontend', 'npm ci'],
 							},
 							build: {
 								commands: ['npm run build'],

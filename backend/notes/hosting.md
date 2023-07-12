@@ -433,3 +433,40 @@ OMG it worked, I mean, the build failed, but it worked!!!!🎉
 I got the right branch and even deployed my cdk code!
 
 Looks like it failed because it couldn't find the `.next` command. Which suggest all I have to do is run `npm ci` in that directory.
+
+I added it to my buildspec but when the backend deployed it didn't contain my updated buildspec changes until the \*_next_ deploy.
+
+Ah, this is because the buildspec doesn't get updated until the cdk deploys, but at that time the previous buildspec has been acquired and the deployment doesn't self-mutate.
+
+## Fast Forward
+
+Wow, so after a day of talking with Sean and Andy on the Amplify team, the issue seems architectural to Amplify Hosting. In short. This isn't possible.
+
+A summarization of the issue:
+
+**Context**
+So essentially, I have a monorepo
+
+```sh
+myRepo
+  -frontend
+  -backend
+```
+
+My frontend is a NextJS app and my backend is a CDK app. My backend creates the resources (S3 bucket, Cognito pool, etc) and I pass those ID values to my frontend via a buildspec.yml file.
+My buildspec is setup so that a preBuild step deploys my CDK app and the build step handles my frontend. So the order is always `backend deploy > frontend deploy`. Pushing to GitHub triggers this deploy.
+
+**Problem**
+
+If I create a backend resource (say I added an S3 bucket), I need to pass that bucket name to my frontend project via the buildspec file as a new environment variable. However when Amplify Hosting pulls my repo, it is still referencing the old buildspec (because the preBuild step hasn't run yet to update it). This results in the enviornment variable (in this case for the S3 bucket) no being available until the next build.
+
+**What I want**
+In one repo, fully deployed with and Amplify buildspec,
+I want my frontend to contain a config like shown here: https://github.com/mtliendo/s3-cloudinary-frontend/blob/main/src/config.ts#L1-L18
+
+and I want my backend to pass in values to the frontend build like shown here: https://github.com/mtliendo/s3-cloudinary-backend/blob/9601b9de12fc09bc73e4857e75ba0630709c0dd0/lib/hosting/nextjsHosting.ts#L89-L96
+
+> 🗒️ Honestly, I should be able to add environment variables and they would just be available to my frontend build w/o me having to inject them myself. Like every other hosting provider does.
+
+**Result**
+Monorepo support is not possible. Moving to back to separated repos, and my backend with GitHub actions. This is 2 days down the drain.

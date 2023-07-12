@@ -13,7 +13,7 @@ const microSaaSStack = new MicroSaaSStack(app, 'MicroSaaSStack', {
 	env: { account: context.account, region: context.region },
 })
 
-new AmplifyHostingStack(app, 'AmplifyHostingStack', {
+const amplifyApp = new AmplifyHostingStack(app, 'AmplifyHostingStack', {
 	env: { account: context.account, region: context.region },
 }).addDependency(
 	microSaaSStack,
