@@ -344,3 +344,21 @@ GitHub Repo > Settings > Secrets > Actions> New
 ![add github secret](./images/add-github-secret.png)
 
 From here I'll push my code and should observe two builds. One failing and one succeeding.
+
+Oh..it failed because it's still has AMPLIFY_DIFF_DEPLOY set to true 😩
+
+I feel like I'm close, but am missing something obvious...obviously hidden.
+
+![amplify build history](./images/ampilfy-build-history.png)
+
+Ok..thinking this through:
+
+The problem is I need to deploy my frontend after every backend build because there may be environment variables that are needed by the frontend's Amplify config that need to be a part of the build.
+
+If I remove `AMPLIFY_DIFF_DEPLOY` then my frontend builds..which is what I want, but it builds **before** my backend has deployed. Which is not what I want.
+
+To solve this, I added `AMPLIFY_DIFF_DEPLOY` and setup a GitHub action to deploy my frontend. But now, Amplify Hosting looks for an Amplify generated backend (`/amplify` folder).
+
+Pausing here since this feels like something I need an Amplify employee to help me out on.
+
+<!-- timecheck: 12:24pm-->
