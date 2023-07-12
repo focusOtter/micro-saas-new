@@ -16,6 +16,7 @@ export class AmplifyHostingStack extends cdk.Stack {
 			ghOwner: context.github.username,
 			repo: context.github.repo,
 			ghTokenName: context.github.tokenName,
+			frontendRootFolderName: context.frontendRootFolderName,
 		})
 	}
 }

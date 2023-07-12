@@ -169,3 +169,50 @@ Ok cool, it's just `--require-approval LEVEL` where `LEVEL` is an enum.
 ![approval  level](./images/cdk-approval.png)
 
 `--require-approval never` is what I want
+
+Succesfully deloyed 🎉
+
+In the Amplify Console I'm going to manually trigger a build and see if I can get the site to deploy.
+
+![failed Amplify build1](./images/failed-amplify-build1.png)
+
+So it didn't work, but there's still some good info here...
+
+- the source repo is set to the correct branch
+- the domain is set to the right prefix (`develop`)
+
+Let's look at the build logs..
+
+![failed build log 1](./images/failed-build-log-1.png)
+
+This is actually a pretty good message! Even gives me a [direct link to the docs](https://docs.aws.amazon.com/amplify/latest/userguide/monorepo-configuration.html#setting-monorepo-environment-variable) to fix.
+
+Reading over the docs, it looks like it's a 2 step process:
+
+1. Set the `appRoot`
+2. Set an environment variable called `AMPLIFY_MONOREPO_APP_ROOT` that matches the appRoot.
+
+I don't like this. If they have to be the same, then it should just auto-assign it for me.
+
+In any case, let's see if this fixes it. I could just add it in the console, but that's not fun. Let's add it in code.
+
+```ts
+// amplify.ts
+environmentVariables: {
+	AMPLIFY_MONOREPO_APP_ROOT: props.frontendRootFolderName,
+	...props.environmentVariables,
+},
+```
+
+```ts
+// frontendHosting/stack.ts
+const amplifyApp = createAmplifyHosting(this, {
+	appName: context.appName,
+	stage: context.stage,
+	branch: context.branchName,
+	ghOwner: context.github.username,
+	repo: context.github.repo,
+	ghTokenName: context.github.tokenName,
+	frontendRootFolderName: context.frontendRootFolderName, // "frontend"
+})
+```

@@ -15,6 +15,7 @@ type AmplifyHostingProps = StackProps & {
 	ghOwner: string
 	repo: string
 	ghTokenName: string
+	frontendRootFolderName: string
 	environmentVariables?: { [name: string]: string }
 }
 
@@ -37,7 +38,10 @@ export function createAmplifyHosting(
 				status: RedirectStatus.NOT_FOUND_REWRITE,
 			},
 		],
-		environmentVariables: props.environmentVariables,
+		environmentVariables: {
+			AMPLIFY_MONOREPO_APP_ROOT: props.frontendRootFolderName,
+			...props.environmentVariables,
+		},
 		buildSpec: codebuild.BuildSpec.fromObjectToYaml({
 			version: 1,
 			applications: [
