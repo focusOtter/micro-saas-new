@@ -71,6 +71,7 @@ export function createAmplifyHosting(
 			},
 		],
 		environmentVariables: {
+			AMPLIFY_MONOREPO_APP_ROOT: 'frontend',
 			...props.environmentVariables,
 		},
 		buildSpec: codebuild.BuildSpec.fromObjectToYaml({
