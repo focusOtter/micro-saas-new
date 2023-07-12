@@ -373,3 +373,21 @@ I'm going to refactor this, but there is still a bunch of learnings of things th
 ## Migrating from GitHub actions to Buildspec
 
 Ok... I _think_ "all" I have to do is port my cdk operations from my GitHub actions `.yml` file over to my buildspec. Specifically, it'll be in the preBuild phase. Then update The role for Amplify so that it basically has the same permissions as what the cdk has.
+
+I just refactored, which wasn't hard at all. I did have to remove the AMPLIFY_DIFF environment variable since that giving the same issue as before, but I'm completely off GitHub actions!
+
+I deployed and everythign succeeded, but my backend never deployed..
+
+Oh, the buildspec hasn't been updated. Hmmm so similar to the deployment stack where I needed to deploy it first, my `AmplifyHostingStack` stack has to be deployed first. This way the buildspec is updated along with the role. Makes sense.
+
+```sh
+npx aws-cdk deploy --exclusively AmplifyHostingStack --profile focus-otter-sandbox
+```
+
+After deploying, I verified the buildspec was updated. It is.
+
+![amplify buildspec with cdk](./images/amplify-buildspec-cdk.png)
+
+I'm kinda guessing on the file paths part so I put in a couple `pwd` calls so I can debug easier if needed.
+
+Deploying to GitHub.
