@@ -5,13 +5,24 @@ import { CDKContext } from './cdk.context'
 export const getCurrentGitBranch = () => {
 	// run a shell command to get the current git branch
 
-	const currentBranch = childProcess
-		.execSync('git symbolic-ref --short HEAD')
-		.toString()
-		.trim()
+	let currentBranch
+	try {
+		currentBranch = childProcess
+			.execSync('git symbolic-ref --short HEAD')
+			.toString()
+			.trim()
+	} catch (e) {
+		console.log(
+			'Could not determine current branch from git. Trying to get the branch using Amplify AWS_BRANCH environment variable'
+		)
+	}
 
-	if (!currentBranch) {
-		throw new Error('Could not determine current branch')
+	try {
+		currentBranch = childProcess.execSync('$AWS_BRANCH').toString().trim()
+	} catch (e) {
+		console.log(
+			'Could not determine current branch from Amplify AWS_BRANCH environment variable'
+		)
 	}
 	return currentBranch
 }

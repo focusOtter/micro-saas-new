@@ -391,3 +391,25 @@ After deploying, I verified the buildspec was updated. It is.
 I'm kinda guessing on the file paths part so I put in a couple `pwd` calls so I can debug easier if needed.
 
 Deploying to GitHub.
+
+Alright, the build failed. Not biggy. Let's find out why..
+
+![failed-deploy-codebuild-branch](./images/failed-deploy-codebuild-branch.png)
+
+Ah. The same issue with codepipeline 😩 So when Codebuild grabs my code from GitHub, it does it by commit, not branch.
+
+I think I notice something though...to get the branch locally, I run a shell command in my `/utils.ts` file. Amplify knows the branch because it knows where to get the code from. If I can find that variable I should be able to plug it in...
+
+Alright I found AWS_BRANCH [here](AWS_BRANCH)
+
+Going to update my `/utils.ts` file to include the following:
+
+```ts
+try {
+	currentBranch = childProcess.execSync('$AWS_BRANCH').toString().trim()
+} catch (e) {
+	console.log(
+		'Could not determine current branch from Amplify AWS_BRANCH environment variable'
+	)
+}
+```
