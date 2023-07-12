@@ -260,3 +260,16 @@ The frontend was skipped, but now the backend was triggered and there is no Ampl
 <!-- timecheck: 2:58am -->
 
 I think this is a good spot to call it a night.
+
+Wait...is this just UX thing and it's actually doing what it's supposed to?
+Technically, the frontend and backend aren't deploying. It's just that the UI is reporting it as a "failed" build instead of a "skipped" build.
+
+Yea..that makes sense because if I update an environment variable via the CDK, it will update in the AWS Console. I'll report this to the team.
+
+So then what I want to do is keep this as is, but because I still need to trigger a build (so that the frontend environment can get deploy with updated envVars), in my GitHub Action add a step that triggers an Amplify build via a webhook.
+
+I think I have this code somewhere..
+
+[FOUND IT!](https://github.com/mtliendo/cdk-oidc-deploy/blob/develop/.github/workflows/aws.yml#L43-L53) OK, so this is still doable...just not tonight 😅
+
+<!-- timecheck: 3:13am -->
