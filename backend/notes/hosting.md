@@ -273,3 +273,74 @@ I think I have this code somewhere..
 [FOUND IT!](https://github.com/mtliendo/cdk-oidc-deploy/blob/develop/.github/workflows/aws.yml#L43-L53) OK, so this is still doable...just not tonight 😅
 
 <!-- timecheck: 3:13am -->
+<!-- timecheck: 11:23am -->
+
+## Setting up Amplify Webhooks to Deploy Frontend
+
+Alright, jumping back into this, let's update the GitHub Action so that if grabs the correct webhook URL (depending on the branch) and calls it.
+
+```yml
+- name: Trigger Amplify Build
+  run: |
+    if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+      WEBHOOK_URL="${{ secrets.DEVELOP_WEBHOOK_URL }}"
+    elif [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+      WEBHOOK_URL="${{ secrets.MAIN_WEBHOOK_URL }}"
+    fi
+
+    if [ ! -z "${WEBHOOK_URL}" ]; then
+      curl -X POST -d {} "${WEBHOOK_URL}" -H "Content-Type:application/json"
+    fi
+```
+
+Crazy syntax, but it says:
+
+1. If we're on the develop branch and a push has been made, assign the `DEVELOP_WEBHOOK_URL`.
+2. If a PR occurs and is merged assign the `MAIN_WEBHOOK_URL`.
+3. If a `WEBHOOK_URL` has been assigned, then call it with `curl`.
+
+So everytime my backend code is updated and pushed to github, the following should occur based off of what I've observed:
+
+1. A github action flow will be triggered
+2. At the same time, my amplify frontend deployment will trigger
+3. When my stacks deploy, they will build out my frontend
+4. My frontend build triggered from Amplify will fail due to not finding a backend.
+5. My frontend build triggered from GitHub actions will succeed due to not relying on a backend.
+
+My _feeling_ here is that our monorepo support isn't great. But at the same time everything seems possible. I think a solution is a mix of better documentation, a better Hosting UI, and better mechanisms for fullstack development especially as we lean on the CDK more and more.
+
+## Testing Amplify Webhooks to Deploy Frontend
+
+With my GitHub action updated, I have to create the Webhook in Amplify and assign it as a secret in GitHub.
+
+For creating it, I have two options:
+
+1. Click through the AWS console
+2. use the AWS CLI.
+
+Because I'm a glutten for punishment, you know which one I'm picking...
+
+https://awscli.amazonaws.com/v2/documentation/api/latest/reference/amplify/create-webhook.html
+
+Ok, so this doesn't look bad at all.
+
+I'm assuming it's:
+
+```sh
+aws amplify
+ create-webhook --app-id d2t34d7zazsoo4 --branch-name develop --profile focus-otter-sandbox
+```
+
+> I cheat and grap my app id from the console instead of using cfn.output
+
+Worked on the first try 😁
+
+I copied the URL from the terminal output and headed over to GitHub to add the URL.
+
+> I spent 30 seconds googling if there was cool kids way of adding the secret w/o leaving VS Code, but didn't find anything. Probably could do it with the GitHub CLI, but I'm not that cool.
+
+GitHub Repo > Settings > Secrets > Actions> New
+
+![add github secret](./images/add-github-secret.png)
+
+From here I'll push my code and should observe two builds. One failing and one succeeding.

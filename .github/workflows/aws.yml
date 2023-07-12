@@ -39,3 +39,14 @@ jobs:
 
       - name: cdk deploy
         run: cd backend && npx aws-cdk deploy --require-approval never --exclusively MicroSaaSStack AmplifyHostingStack
+      - name: Trigger amplify build based on branch
+        run: |
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+            WEBHOOK_URL="${{ secrets.DEVELOP_WEBHOOK_URL }}"
+          elif [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+            WEBHOOK_URL="${{ secrets.MAIN_WEBHOOK_URL }}"
+          fi
+
+          if [ ! -z "${WEBHOOK_URL}" ]; then
+            curl -X POST -d {} "${WEBHOOK_URL}" -H "Content-Type:application/json"
+          fi
