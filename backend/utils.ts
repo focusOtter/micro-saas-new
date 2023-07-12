@@ -18,7 +18,7 @@ export const getCurrentGitBranch = () => {
 	}
 
 	try {
-		currentBranch = childProcess.execSync('$AWS_BRANCH').toString().trim()
+		currentBranch = childProcess.execSync('echo $AWS_BRANCH').toString().trim()
 	} catch (e) {
 		console.log(
 			'Could not determine current branch from Amplify AWS_BRANCH environment variable'

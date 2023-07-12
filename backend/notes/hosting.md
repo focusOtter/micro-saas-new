@@ -400,7 +400,7 @@ Ah. The same issue with codepipeline 😩 So when Codebuild grabs my code from G
 
 I think I notice something though...to get the branch locally, I run a shell command in my `/utils.ts` file. Amplify knows the branch because it knows where to get the code from. If I can find that variable I should be able to plug it in...
 
-Alright I found AWS_BRANCH [here](AWS_BRANCH)
+Alright I found AWS_BRANCH [here](https://docs.aws.amazon.com/amplify/latest/userguide/environment-variables.html#frontend-framework-environment-variables)
 
 Going to update my `/utils.ts` file to include the following:
 
@@ -413,3 +413,15 @@ try {
 	)
 }
 ```
+
+Deployed. It Failed. But! I get this error:
+
+```sh
+develop: command not found
+```
+
+I'm close!!
+
+ChatGPT says I need to use process.env.AWS_BRANCH to avoid it being ran as a command. ohhh...worth noting 😅 This may be why it told me to use `echo` in front, but I ignored it lol
+
+I'm actually going to try `echo` and if that doesn't work I'll go the process.env route
