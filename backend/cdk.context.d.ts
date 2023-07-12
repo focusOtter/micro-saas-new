@@ -9,5 +9,9 @@ export type CDKContext = {
 }
 
 export type envNameContext = 'prod' | 'dev'
-export type githubContext = { username: string; repo: string }
+export type githubContext = {
+	username: string
+	repo: string
+	tokenName: string
+}
 export type branchNameContext = 'main' | 'develop'

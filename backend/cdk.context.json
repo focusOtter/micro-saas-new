@@ -5,7 +5,8 @@
 		"appDescription": "A simple description",
 		"github": {
 			"username": "focusOtter",
-			"repo": "micro-saas-new"
+			"repo": "micro-saas-new",
+			"tokenName": "github-token"
 		}
 	},
 	"environments": [
