@@ -216,3 +216,17 @@ const amplifyApp = createAmplifyHosting(this, {
 	frontendRootFolderName: context.frontendRootFolderName, // "frontend"
 })
 ```
+
+I pushed to GitHub which started the deploy.
+
+Deploy successful, but when I went to the Amplify Console, the deploy was already started...this feels off. Shoudln't it only deploy when there is a change to the "frontend" directory?
+
+If this the frontend deploys when there is a change to the entire repo, then my guess is there is a race condition since the frontend is building before the backend has had a chance to update any values.
+
+Time will tell...if this fails, I'll redeploy w/o changing anything since the backend will have deployed by then.
+
+Yup...build failed for the same reason as before. Clicking redeploy.
+
+Build Successful. Damn I'm good.
+
+Ok, a final test is to commit this updated markdown file, which will trigger another backend deploy, but _shouldn't_ trigger a frontend deployment.
