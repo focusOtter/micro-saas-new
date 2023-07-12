@@ -157,3 +157,5 @@ Oh wait! I have to update my Github action so that it deploys the Hosting stack 
 		run: cd backend && npx aws-cdk deploy --exclusively MicroSaaSStack AmplifyHostingStack
 
 ```
+
+Looks like it failed due to needing manual approval. Easy enough, I'll add the `--no-approve` flag.
