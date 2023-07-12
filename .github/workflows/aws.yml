@@ -38,4 +38,4 @@ jobs:
         run: cd backend && npx aws-cdk diff
 
       - name: cdk deploy
-        run: cd backend && npx aws-cdk deploy --approval-level never --exclusively MicroSaaSStack AmplifyHostingStack
+        run: cd backend && npx aws-cdk deploy --require-approval never --exclusively MicroSaaSStack AmplifyHostingStack
