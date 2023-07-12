@@ -424,4 +424,12 @@ I'm close!!
 
 ChatGPT says I need to use process.env.AWS_BRANCH to avoid it being ran as a command. ohhh...worth noting 😅 This may be why it told me to use `echo` in front, but I ignored it lol
 
-I'm actually going to try `echo` and if that doesn't work I'll go the process.env route
+I'm actually going to try `echo` and if that doesn't work I'll go the process.env route.
+
+OMG it worked, I mean, the build failed, but it worked!!!!🎉
+
+![build failed but still won](./images/build-failed-but-still-won.png)
+
+I got the right branch and even deployed my cdk code!
+
+Looks like it failed because it couldn't find the `.next` command. Which suggest all I have to do is run `npm ci` in that directory.

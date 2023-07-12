@@ -90,6 +90,7 @@ export function createAmplifyHosting(
 									'npx aws-cdk diff',
 									'npx aws-cdk deploy --require-approval never --exclusively MicroSaaSStack AmplifyHostingStack',
 									'cd ../frontend',
+									'npm ci',
 								],
 							},
 							build: {
