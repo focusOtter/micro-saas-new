@@ -230,3 +230,18 @@ Yup...build failed for the same reason as before. Clicking redeploy.
 Build Successful. Damn I'm good.
 
 Ok, a final test is to commit this updated markdown file, which will trigger another backend deploy, but _shouldn't_ trigger a frontend deployment.
+
+![test-frontend-deploy](./images/test-frontend-deploy.png)
+
+Dang. It still triggered a deployment. _sigh_ to the docs I go.
+
+<!-- timecheck: 2:20 -->
+
+<!-- timecheck: 2:37 -->
+
+Found it...I hope!
+![enable diff deploy](./images/enable-diff-deploy.png)
+
+So looks like I just need to add AMPLIFY_DIFF_DEPLOY and set it to true.
+
+I'm going to add this in the console, then add it in code and see if the frontend gets triggered.
