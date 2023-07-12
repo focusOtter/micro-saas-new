@@ -369,3 +369,7 @@ After speaking with Sean Quinn, he recommended putting my backend deployment pip
 I didn't know this was possible. I'd obviously have to update the role for Amplify to allow that, but I just checked and the L2 construct _does_ expose a `role` property. This could significantly decrease ci/cd overhead.
 
 I'm going to refactor this, but there is still a bunch of learnings of things that happened so far, so I'm going to move this over to a `hosting-learnings` branch.
+
+## Migrating from GitHub actions to Buildspec
+
+Ok... I _think_ "all" I have to do is port my cdk operations from my GitHub actions `.yml` file over to my buildspec. Specifically, it'll be in the preBuild phase. Then update The role for Amplify so that it basically has the same permissions as what the cdk has.

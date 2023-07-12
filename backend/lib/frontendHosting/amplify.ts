@@ -1,4 +1,4 @@
-import { SecretValue, StackProps } from 'aws-cdk-lib'
+import { Duration, SecretValue, StackProps } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import * as codebuild from 'aws-cdk-lib/aws-codebuild'
 import {
@@ -7,9 +7,17 @@ import {
 	RedirectStatus,
 } from '@aws-cdk/aws-amplify-alpha'
 import { CfnApp } from 'aws-cdk-lib/aws-amplify'
+import {
+	Effect,
+	PolicyDocument,
+	PolicyStatement,
+	Role,
+	ServicePrincipal,
+} from 'aws-cdk-lib/aws-iam'
 
 type AmplifyHostingProps = StackProps & {
 	appName: string
+	account: string
 	stage: string
 	branch: string
 	ghOwner: string
@@ -23,8 +31,32 @@ export function createAmplifyHosting(
 	scope: Construct,
 	props: AmplifyHostingProps
 ) {
+	const amplifyDeployCDKRole = new Role(
+		scope,
+		'allow-amplify-deploy-cdk-role',
+		{
+			assumedBy: new ServicePrincipal('amplify.amazonaws.com'),
+			description:
+				'Role assumed by GitHubPrincipal for deploying from CI using aws cdk',
+			roleName: `${props.repo}-amplify-deploy-with-cdk`,
+			maxSessionDuration: Duration.hours(1),
+			inlinePolicies: {
+				CdkDeploymentPolicy: new PolicyDocument({
+					assignSids: true,
+					statements: [
+						new PolicyStatement({
+							effect: Effect.ALLOW,
+							actions: ['sts:AssumeRole'],
+							resources: [`arn:aws:iam::${props.account}:role/cdk-*`],
+						}),
+					],
+				}),
+			},
+		}
+	)
 	const amplifyApp = new App(scope, `${props.appName}-hosting-${props.stage}`, {
 		appName: props.appName,
+		role: amplifyDeployCDKRole,
 		sourceCodeProvider: new GitHubSourceCodeProvider({
 			owner: props.ghOwner,
 			repository: props.repo,
@@ -39,8 +71,6 @@ export function createAmplifyHosting(
 			},
 		],
 		environmentVariables: {
-			AMPLIFY_MONOREPO_APP_ROOT: props.frontendRootFolderName,
-			AMPLIFY_DIFF_DEPLOY: 'true',
 			...props.environmentVariables,
 		},
 		buildSpec: codebuild.BuildSpec.fromObjectToYaml({
@@ -50,7 +80,16 @@ export function createAmplifyHosting(
 					frontend: {
 						phases: {
 							preBuild: {
-								commands: ['npm ci'],
+								commands: [
+									'pwd',
+									'cd ..',
+									'pwd',
+									'cd backend',
+									'npm ci',
+									'npx aws-cdk diff',
+									'npx aws-cdk deploy --require-approval never --exclusively MicroSaaSStack AmplifyHostingStack',
+									'cd ../frontend',
+								],
 							},
 							build: {
 								commands: ['npm run build'],

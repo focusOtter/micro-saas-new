@@ -11,6 +11,7 @@ export class AmplifyHostingStack extends cdk.Stack {
 
 		const amplifyApp = createAmplifyHosting(this, {
 			appName: context.appName,
+			account: context.account,
 			stage: context.stage,
 			branch: context.branchName,
 			ghOwner: context.github.username,
