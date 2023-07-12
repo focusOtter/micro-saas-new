@@ -5,10 +5,15 @@ import { CDKContext } from './cdk.context'
 export const getCurrentGitBranch = () => {
 	// run a shell command to get the current git branch
 
-	return childProcess
+	const currentBranch = childProcess
 		.execSync('git symbolic-ref --short HEAD')
 		.toString()
 		.trim()
+
+	if (!currentBranch) {
+		throw new Error('Could not determine current branch')
+	}
+	return currentBranch
 }
 
 export const getCDKContext = (scope: App | Stack) => {
