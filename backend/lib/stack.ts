@@ -4,6 +4,7 @@ import { getCDKContext } from '../utils'
 import { createAmplifyHosting } from './hosting/amplify'
 import { createSaasAuth } from './cognito/auth'
 import { createSaasPicsBucket } from './s3/bucket'
+import { createAmplifyGraphqlApi } from './api/appsync'
 
 export class MicroSaaSStack extends cdk.Stack {
 	constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -32,6 +33,14 @@ export class MicroSaaSStack extends cdk.Stack {
 			authenticatedRole: cognito.identityPool.authenticatedRole,
 		})
 
+		const amplifyGraphQLAPI = createAmplifyGraphqlApi(this, {
+			appName: context.appName,
+			stage: context.stage,
+			userpool: cognito.userPool,
+			authenticatedRole: cognito.identityPool.authenticatedRole,
+			unauthenticatedRole: cognito.identityPool.unauthenticatedRole,
+		})
+
 		new cdk.CfnOutput(this, 'region', {
 			value: this.region,
 		})
@@ -46,6 +55,15 @@ export class MicroSaaSStack extends cdk.Stack {
 		})
 		new cdk.CfnOutput(this, 'bucket', {
 			value: bucket.bucketName,
+		})
+		new cdk.CfnOutput(this, 'aws_appsync_graphqlEndpoint', {
+			value: amplifyGraphQLAPI.resources.cfnGraphqlApi.attrGraphQlUrl,
+		})
+		new cdk.CfnOutput(this, 'aws_appsync_apiId', {
+			value: amplifyGraphQLAPI.resources.cfnGraphqlApi.attrApiId,
+		})
+		new cdk.CfnOutput(this, 'aws_appsync_authenticationType', {
+			value: 'AMAZON_COGNITO_USER_POOLS',
 		})
 	}
 }

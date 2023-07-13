@@ -1,0 +1,37 @@
+type Recipe @model @auth(rules: [{ allow: owner }]) {
+	id: ID!
+	owner: String!
+	coverImage: String!
+	title: String!
+	description: String!
+	servings: Int!
+	ingredientsText: String! # String generated from Quill.js
+	stepsText: String! # String generated from Quill.js
+}
+
+type User @model @auth(rules: [{ allow: owner }]) {
+	id: ID!
+	owner: String! @auth(rules: [{ allow: owner, operations: [read] }])
+	username: String!
+	email: AWSEmail!
+	profilePicture: AWSURL
+	displayName: String
+	stripeCustomerId: String @auth(rules: [{ allow: owner, operations: [read] }])
+	subscriptionStatus: PLAN_STATUS_ENUM!
+}
+
+# prospective:Signed up, new to platform. Hasn't ever subscribed
+# trialing:Started n-day free trial. Assumes card on file
+# active:They're paid
+# past_due:They're unpaid, more attempts will automatically be made
+# unpaid:Stripe is done attempting. Revoke access here
+# canceled:Customer canceled. Still signed up. Has to resubscribe
+
+enum PLAN_STATUS_ENUM {
+	prospective
+	trialing
+	active
+	past_due
+	unpaid
+	canceled
+}
