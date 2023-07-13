@@ -478,7 +478,7 @@ After spitballing solutions with the Amplify team, one said to use the AWS CLI t
 export MY_ENV_VAR=$(aws cloudformation --region ap-southeast-2 describe-stacks --stack-name mystack --query 'Stacks[0].Outputs[?OutputKey==`TheOutputName`].OutputValue' --output text)
 ```
 
-My response was that this solves the problem, but is not a solution.
+My response was that "this solves the problem, but is not a solution."
 
 CDK -> Amplify buildspec -> Cloudformation is not the way I want to explain to customers how easy this is.
 
@@ -500,4 +500,40 @@ Realizing how much this simplied my workflow, I moved things back to a single st
 
 What I noticed however is that when modifying my buildspec file, a CDK deploy doesn't update it. Even when that deploy is to update the buildspec. It's completely driven by git. This is a bug.
 
-Since this seems determined to only use a static buildspec by GitHub, I'm going to move it out of the CDK project since it doesn't need any dynamic values, and instead put it in the root of the `frontend` repo. If I deploy, it should get picked up...
+Since this seems determined to only use a static buildspec by GitHub, I'm going to move it out of the CDK project since it doesn't need any dynamic values, and instead put it in the root of the `frontend` repo and make sure it's named `amplify.yml. If I deploy, it should get picked up...
+
+It did! Build successful.
+
+👀 **Observations**
+
+- When in the root directory (`appRoot` in the case of a monorepo), Amplify will grab that buildspec and use it--regardless of what what deployed by the cdk and what is already existing in the Build Settings in Amplify Hosting.
+
+- Updating the Role of an Amplify project results in the creation of a new Amplify App with the same name.
+
+- In the case of a cfn.Output being outputted to a file, the json file will be nested inside of an object with a key of the stack name. Example:
+
+```ts
+new cdk.CfnOutput(this, 'AmplifyAppId', {
+	value: amplifyApp.appId,
+})
+```
+
+results in:
+
+```json
+{
+	"MicroSaaSStack": {
+		"AmplifyAppId": "d3uzuj22ktaraa"
+	}
+}
+```
+
+With this knowledge, as long as I'm able to keep everything in the same stack, my entire AWS Amplify config object could be listed here in the same format that Amplify expects 💯
+
+I did it.
+
+My goal was to come up with an easy way for fullstack apps to take advantage of a single-stack/multi-env mono repo with NextJS and the CDK, and after 2 days, I did it. Feels good. So far, a customer can simply update the `context.cdk.json` file and deploy the app.
+
+Next up is porting over my resources from [my previous repo](https://github.com/focusOtter/microsaas-backend/tree/main/lib) to this one.
+
+[Catch you there!](./main-architecture.md)
