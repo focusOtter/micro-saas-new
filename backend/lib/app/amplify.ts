@@ -26,9 +26,8 @@ export function createAmplifyHosting(
 		'allow-amplify-deploy-cdk-role',
 		{
 			assumedBy: new iam.ServicePrincipal('amplify.amazonaws.com'),
-			description:
-				'Role assumed by GitHubPrincipal for deploying from CI using aws cdk',
-			roleName: `${props.repo}-amplify-deploy-from-cdk`,
+			description: `Role assumed by Amplify Hosting for deploying aws cdk when in ${props.stage} environment`,
+			roleName: `${props.repo}-amplify-deploy-from-cdk-${props.stage}`,
 			maxSessionDuration: Duration.hours(1),
 			inlinePolicies: {
 				CdkDeploymentPolicy: new iam.PolicyDocument({
