@@ -66,39 +66,6 @@ export function createAmplifyHosting(
 			environmentVariables: {
 				AMPLIFY_MONOREPO_APP_ROOT: 'frontend',
 			},
-			buildSpec: codebuild.BuildSpec.fromObjectToYaml({
-				version: 1,
-				applications: [
-					{
-						frontend: {
-							phases: {
-								preBuild: {
-									commands: [
-										'cd ..',
-										'cd backend',
-										'npm ci',
-										'npx aws-cdk diff',
-										'npx aws-cdk deploy --outputs-file ../frontend/outputs.json --require-approval never',
-										'cd ../frontend',
-										'npm ci',
-									],
-								},
-								build: {
-									commands: ['npm run build'],
-								},
-							},
-							artifacts: {
-								baseDirectory: '.next',
-								files: ['**/*'],
-							},
-							cache: {
-								paths: ['node_modules/**/*'],
-							},
-						},
-						appRoot: 'frontend',
-					},
-				],
-			}),
 		}
 	)
 

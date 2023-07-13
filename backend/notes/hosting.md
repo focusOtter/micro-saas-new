@@ -495,3 +495,9 @@ npx aws-cdk deploy --outputs-file ../frontend/output.json
 ```
 
 No gonna lie. I'm patting myself on the back for this one 😅
+
+Realizing how much this simplied my workflow, I moved things back to a single stack.
+
+What I noticed however is that when modifying my buildspec file, a CDK deploy doesn't update it. Even when that deploy is to update the buildspec. It's completely driven by git. This is a bug.
+
+Since this seems determined to only use a static buildspec by GitHub, I'm going to move it out of the CDK project since it doesn't need any dynamic values, and instead put it in the root of the `frontend` repo. If I deploy, it should get picked up...
