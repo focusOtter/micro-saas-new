@@ -78,26 +78,18 @@ export function createAmplifyHosting(
 			version: 1,
 			applications: [
 				{
-					backend: {
+					frontend: {
 						phases: {
 							preBuild: {
-								commands: [],
-							},
-							build: {
 								commands: [
 									'cd ..',
 									'cd backend',
 									'npm ci',
 									'npx aws-cdk diff',
-									'npx aws-cdk deploy --require-approval never --exclusively MicroSaaSStack AmplifyHostingStack',
+									'npx aws-cdk deploy --outputs-file ../frontend/outputs.json --require-approval never',
+									'cd ../frontend',
+									'npm ci',
 								],
-							},
-						},
-					},
-					frontend: {
-						phases: {
-							preBuild: {
-								commands: ['cd ../frontend', 'npm ci'],
 							},
 							build: {
 								commands: ['npm run build'],

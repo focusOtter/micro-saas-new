@@ -470,3 +470,28 @@ and I want my backend to pass in values to the frontend build like shown here: h
 
 **Result**
 Monorepo support is not possible. Moving to back to separated repos, and my backend with GitHub actions. This is 2 days down the drain.
+
+**Update**
+After spitballing solutions with the Amplify team, one said to use the AWS CLI to grab the values from the deployed cloudformation stack:
+
+```sh
+export MY_ENV_VAR=$(aws cloudformation --region ap-southeast-2 describe-stacks --stack-name mystack --query 'Stacks[0].Outputs[?OutputKey==`TheOutputName`].OutputValue' --output text)
+```
+
+My response was that this solves the problem, but is not a solution.
+
+CDK -> Amplify buildspec -> Cloudformation is not the way I want to explain to customers how easy this is.
+
+But it did get me thinking..
+
+```sh
+npx aws-cdk deploy --outputs-file output.json
+```
+
+This can be ran locally and in a shell environment. And because this is a monorepo...
+
+```sh
+npx aws-cdk deploy --outputs-file ../frontend/output.json
+```
+
+No gonna lie. I'm patting myself on the back for this one 😅
