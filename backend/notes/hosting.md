@@ -471,7 +471,8 @@ and I want my backend to pass in values to the frontend build like shown here: h
 **Result**
 Monorepo support is not possible. Moving to back to separated repos, and my backend with GitHub actions. This is 2 days down the drain.
 
-**Update**
+## Update
+
 After spitballing solutions with the Amplify team, one said to use the AWS CLI to grab the values from the deployed cloudformation stack:
 
 ```sh
