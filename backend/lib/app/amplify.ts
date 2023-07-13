@@ -46,7 +46,7 @@ export function createAmplifyHosting(
 		scope,
 		`${props.appName}-hosting-${props.stage}`,
 		{
-			appName: `${props.appName}-hosting-${props.stage}`,
+			appName: `${props.appName}-${props.stage}`,
 			role: amplifyDeployCDKRole,
 			sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
 				owner: props.ghOwner,
