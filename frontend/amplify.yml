@@ -12,6 +12,7 @@ applications:
               never
             - cd ../frontend
             - npm ci
+            - echo "hello!"
         build:
           commands:
             - npm run build
