@@ -8,7 +8,7 @@ applications:
             - cd backend
             - npm ci
             - npx aws-cdk diff
-            - npx aws-cdk deploy --outputs-file ../frontend/outputs.json --require-approval
+            - npx aws-cdk deploy --outputs-file ../frontend/output.json --require-approval
               never
             - cd ../frontend
             - npm ci
