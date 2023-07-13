@@ -1,6 +1,5 @@
 import { Duration, SecretValue, StackProps } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-import * as codebuild from 'aws-cdk-lib/aws-codebuild'
 import * as amplify from '@aws-cdk/aws-amplify-alpha'
 import { CfnApp } from 'aws-cdk-lib/aws-amplify'
 import * as iam from 'aws-cdk-lib/aws-iam'
