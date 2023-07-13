@@ -17,12 +17,17 @@ export const getCurrentGitBranch = () => {
 		)
 	}
 
-	try {
-		currentBranch = childProcess.execSync('echo $AWS_BRANCH').toString().trim()
-	} catch (e) {
-		console.log(
-			'Could not determine current branch from Amplify AWS_BRANCH environment variable'
-		)
+	if (!currentBranch) {
+		try {
+			currentBranch = childProcess
+				.execSync('echo $AWS_BRANCH')
+				.toString()
+				.trim()
+		} catch (e) {
+			console.log(
+				'Could not determine current branch from Amplify AWS_BRANCH environment variable'
+			)
+		}
 	}
 	return currentBranch
 }
