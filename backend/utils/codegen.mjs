@@ -1,14 +1,24 @@
 import { execSync } from 'child_process'
 import config from '../../frontend/output.json' assert { type: 'json' }
 
+const profileArg = process.argv.find((arg) => arg.startsWith('--profile'))
+
+let profile
+if (profileArg) {
+	profile = profileArg.split('=')[1]
+}
 // This script will get the schema from your API and generate the code for your app.
 function getSchemaAndGenerateCode(apiId) {
-	const command = `
+	let command = `
 				cd ../frontend &&\
-        aws appsync get-introspection-schema --api-id ${apiId} --format JSON schema.json --profile focus-otter-sandbox &&\
-				npx @aws-amplify/cli codegen &&\
-				cd ../backend
-    `
+        aws appsync get-introspection-schema --api-id ${apiId} --format json schema.json`
+
+	// If profile argument is passed, add it to the command
+	if (profile) {
+		command += ` --profile ${profile}`
+	}
+
+	command += ` && npx @aws-amplify/cli codegen && cd ../backend`
 
 	try {
 		execSync(command)
