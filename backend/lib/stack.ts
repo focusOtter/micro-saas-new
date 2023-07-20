@@ -13,6 +13,7 @@ export class MicroSaaSStack extends cdk.Stack {
 
 		const amplifyApp = createAmplifyHosting(this, {
 			appName: context.appName,
+			region: this.region,
 			account: context.account,
 			stage: context.stage,
 			branch: context.branchName,

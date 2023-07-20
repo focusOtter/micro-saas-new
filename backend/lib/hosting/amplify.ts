@@ -6,6 +6,7 @@ import * as iam from 'aws-cdk-lib/aws-iam'
 
 type AmplifyHostingProps = StackProps & {
 	appName: string
+	region: string
 	account: string
 	stage: string
 	branch: string
@@ -20,6 +21,7 @@ export function createAmplifyHosting(
 	scope: Construct,
 	props: AmplifyHostingProps
 ) {
+	console.log(`arn:aws:appsync:${props.region}:${props.account}:apis/*`)
 	const amplifyDeployCDKRole = new iam.Role(
 		scope,
 		'allow-amplify-deploy-cdk-role',
@@ -36,6 +38,13 @@ export function createAmplifyHosting(
 							effect: iam.Effect.ALLOW,
 							actions: ['sts:AssumeRole'],
 							resources: [`arn:aws:iam::${props.account}:role/cdk-*`],
+						}),
+						new iam.PolicyStatement({
+							effect: iam.Effect.ALLOW,
+							actions: ['appsync:GetIntrospectionSchema'],
+							resources: [
+								`arn:aws:appsync:${props.region}:${props.account}:apis/*`,
+							],
 						}),
 					],
 				}),
