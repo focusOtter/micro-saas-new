@@ -2,7 +2,7 @@
 import 'source-map-support/register'
 import * as cdk from 'aws-cdk-lib'
 import { CDKContext } from '../cdk.context'
-import { getCDKContext } from '../utils'
+import { getCDKContext } from '../utils/generateContext'
 import { MicroSaaSStack } from '../lib/stack'
 
 const app = new cdk.App()

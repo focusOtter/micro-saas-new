@@ -25,7 +25,7 @@ export function createAmplifyGraphqlApi(
 			apiName: `${props.appName}-API-${props.stage}`,
 
 			schema: awsAppsync.SchemaFile.fromAsset(
-				path.join(__dirname, './graphql/schema.graphql')
+				path.join(__dirname, './schema.graphql')
 			),
 			authorizationConfig: {
 				defaultAuthMode: awsAppsync.AuthorizationType.USER_POOL,

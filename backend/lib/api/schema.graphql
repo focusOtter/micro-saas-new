@@ -1,0 +1,20 @@
+type Recipe @model @auth(rules: [{ allow: owner }]) {
+	id: ID!
+	owner: String!
+	coverImage: String!
+	title: String!
+	description: String!
+	servings: Int!
+	ingredientsText: String!
+	stepsText: String!
+}
+
+type User @model @auth(rules: [{ allow: owner }]) {
+	id: ID!
+	owner: String! @auth(rules: [{ allow: owner, operations: [read] }])
+	stripeCustomerId: String @auth(rules: [{ allow: owner, operations: [read] }])
+	username: String!
+	email: AWSEmail!
+	profilePicture: AWSURL
+	displayName: String
+}

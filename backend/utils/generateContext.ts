@@ -1,6 +1,6 @@
 import * as childProcess from 'child_process'
 import { App, Stack } from 'aws-cdk-lib'
-import { CDKContext } from './cdk.context'
+import { CDKContext } from '../cdk.context'
 
 export const getCurrentGitBranch = () => {
 	// run a shell command to get the current git branch

@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib'
 import { CDKContext } from '../cdk.context'
-import { getCDKContext } from '../utils'
+import { getCDKContext } from '../utils/generateContext'
 import { createAmplifyHosting } from './hosting/amplify'
 import { createSaasAuth } from './cognito/auth'
 import { createSaasPicsBucket } from './s3/bucket'

@@ -4,15 +4,14 @@ applications:
       phases:
         preBuild:
           commands:
-            - cd ..
-            - cd backend
+            - cd ../backend
             - npm ci
             - npx aws-cdk diff
             - npx aws-cdk deploy --outputs-file ../frontend/output.json --require-approval
               never
+            - npm run codegen
             - cd ../frontend
             - npm ci
-            - echo "hello!"
         build:
           commands:
             - npm run build
