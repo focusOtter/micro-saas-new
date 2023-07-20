@@ -43,7 +43,7 @@ export function createAmplifyHosting(
 							effect: iam.Effect.ALLOW,
 							actions: ['appsync:GetIntrospectionSchema'],
 							resources: [
-								`arn:aws:appsync:${props.region}:${props.account}:apis/*`,
+								`arn:aws:appsync:${props.region}:${props.account}:v1/apis/*`,
 							],
 						}),
 					],
