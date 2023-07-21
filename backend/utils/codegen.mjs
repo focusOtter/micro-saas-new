@@ -11,7 +11,7 @@ if (profileArg) {
 function getSchemaAndGenerateCode(apiId) {
 	let command = `
 				cd ../frontend &&\
-        aws appsync get-introspection-schema --api-id ${apiId} --format json schema.json`
+        aws appsync get-introspection-schema --api-id ${apiId} --format JSON schema.json`
 
 	// If profile argument is passed, add it to the command
 	if (profile) {
