@@ -10,7 +10,7 @@
 		"test": "jest",
 		"cdk": "cdk",
 		"codegen": "node utils/codegen.mjs",
-		"deploy:local": "npx aws-cdk deploy --profile focus-otter-sandbox --outputs-file ../frontend/output.json && npm run codegen"
+		"deploy:local": "npx aws-cdk deploy --profile=focus-otter-sandbox --outputs-file ../frontend/output.json && npm run codegen -- --profile=focus-otter-sandbox"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.1",
