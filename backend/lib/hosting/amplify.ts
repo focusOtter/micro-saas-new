@@ -42,9 +42,7 @@ export function createAmplifyHosting(
 						new iam.PolicyStatement({
 							effect: iam.Effect.ALLOW,
 							actions: ['appsync:GetIntrospectionSchema'],
-							resources: [
-								`arn:aws:appsync:${props.region}:${props.account}:v1/apis/*`,
-							],
+							resources: [`*`],
 						}),
 					],
 				}),
