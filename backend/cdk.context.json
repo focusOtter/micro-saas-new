@@ -1,5 +1,6 @@
 {
 	"globals": {
+		"stackName": "MicroSaaSStack",
 		"account": "842537737558",
 		"appName": "micro-saas-new",
 		"appDescription": "A simple description",
