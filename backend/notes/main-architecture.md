@@ -168,4 +168,14 @@ Based off of my [current MicroSaaS implementation](https://github.com/focusOtter
 
 All of these functions need a table ARN and/or table name, 2 of them need secrets from Secrets Manager/Parameter Store.
 
-To be continued...
+## To be continued...
+
+---
+
+A few days have passed and I took some time to ask myself, "Is there a way to abstract away all of the Stripe webhook code?". No matter what a user will need to be associated with Stripe, so a `postConfirmation` trigger should be there, and the `getRecipeIdea` is pure custom logic so that seems like it should stay. But is creating a webhook the best.
+
+Then I came across [this blog post](https://clerk.com/blog/refactoring-stripes-api-for-frontend-access). It read through the [source code](https://github.com/clerkinc/use-stripe-subscription) and think for a MicroSaaS app, [it makes sense](https://twitter.com/focusotter/status/1681393988715020293).
+
+I'm going to hold off on the `getRecipeIdea` part, remove the `Stripe webhook` and build out my `postConfirmation Trigger`.
+
+I'll add these notes to the [customer solutions notes](./customer-solutions).

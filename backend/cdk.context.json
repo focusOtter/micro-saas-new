@@ -1,5 +1,6 @@
 {
 	"globals": {
+		"stackName": "MicroSaaSStack",
 		"account": "842537737558",
 		"appName": "micro-saas-new",
 		"appDescription": "A simple description",
@@ -14,12 +15,23 @@
 		{
 			"branchName": "main",
 			"stage": "prod",
-			"region": "us-east-2"
+			"region": "us-east-2",
+			"functions": {
+				"postConfirmation": {
+					"name": "addUserFunc",
+					"stripeSecretName": "microsaas-stripe-key-prod"
+				}
+			}
 		},
 		{
 			"branchName": "develop",
 			"stage": "dev",
-			"region": "us-east-1"
+			"region": "us-east-1",
+			"functions": {
+				"postConfirmation": {
+					"stripeSecretName": "microsaas-stripe-key-dev"
+				}
+			}
 		}
 	]
 }
