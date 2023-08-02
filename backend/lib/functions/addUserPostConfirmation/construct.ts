@@ -26,7 +26,7 @@ export const createAddUserFunc = (
 			entry: path.join(__dirname, `./main.ts`),
 			environment: props.environmentVars,
 			bundling: {
-				nodeModules: ['./'],
+				nodeModules: ['stripe'],
 			},
 		}
 	)

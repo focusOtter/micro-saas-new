@@ -13,6 +13,7 @@
 		"deploy:local": "npx aws-cdk deploy --profile=focus-otter-sandbox --outputs-file ../frontend/output.json && npm run codegen -- --profile=focus-otter-sandbox"
 	},
 	"devDependencies": {
+		"@types/aws-lambda": "^8.10.119",
 		"@types/jest": "^29.5.1",
 		"@types/node": "^20.4.1",
 		"aws-cdk": "2.87.0",
@@ -29,7 +30,9 @@
 		"@aws-cdk/aws-cognito-identitypool-alpha": "^2.87.0-alpha.0",
 		"agqlac": "^0.4.0-agqlac.0",
 		"aws-cdk-lib": "2.87.0",
+		"aws-sdk": "^2.1427.0",
 		"constructs": "^10.0.0",
-		"source-map-support": "^0.5.21"
+		"source-map-support": "^0.5.21",
+		"stripe": "^12.16.0"
 	}
 }
