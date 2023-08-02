@@ -50,16 +50,18 @@ export class MicroSaaSStack extends cdk.Stack {
 		const addUserFunc = createAddUserFunc(this, {
 			appName: context.appName,
 			stage: context.stage,
+			functionName: context.functions.postConfirmation.name,
 			userTableArn: userTable.attrArn,
 			environmentVars: {
-				userDBTableName: userTable.tableName!,
+				USER_TABLE_NAME: userTable.tableName!,
+				STRIPE_SECRET_NAME: context.functions.postConfirmation.stripeSecretName,
 			},
 		})
 
 		//! Can't reference the function by reference because it will trigger a circular dependency (auth -> addUserFunc -> amplifyGraphQLAPI -> auth)
 		const l1Pool = cognito.userPool.node.defaultChild as CfnUserPool
 		l1Pool.lambdaConfig = {
-			postConfirmation: `arn:aws:lambda:${this.region}:${this.account}:function:${context.appName}-${context.stage}-addUserFunc`,
+			postConfirmation: `arn:aws:lambda:${this.region}:${this.account}:function:${context.appName}-${context.stage}-${context.functions.postConfirmation.name}`,
 		}
 
 		new cdk.CfnOutput(this, 'region', {

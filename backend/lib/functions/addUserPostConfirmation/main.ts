@@ -7,7 +7,7 @@ const docClient = new AWS.DynamoDB.DocumentClient()
 import { PostConfirmationConfirmSignUpTriggerEvent } from 'aws-lambda'
 
 exports.handler = async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
-	const parameterName = `micro-saas-stripe-key-${process.env.STAGE}`
+	const parameterName = process.env.STRIPE_SECRET_NAME!
 	try {
 		const response = await ssm
 			.getParameter({ Name: parameterName, WithDecryption: true })
@@ -30,7 +30,7 @@ exports.handler = async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
 		})
 		//construct the param
 		const params = {
-			TableName: process.env.userTableName as string,
+			TableName: process.env.USER_TABLE_NAME as string,
 			Item: {
 				__typename: 'User',
 				id: event.request.userAttributes.sub,

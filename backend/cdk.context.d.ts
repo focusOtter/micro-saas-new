@@ -1,3 +1,5 @@
+import { type } from 'os'
+
 export type CDKContext = {
 	stackName: string
 	account: string
@@ -8,6 +10,14 @@ export type CDKContext = {
 	branchName: branchNameContext
 	region: string
 	github: githubContext
+	functions: functionsContext
+}
+
+type functionsContext = {
+	postConfirmation: {
+		name: string
+		stripeSecretName: string
+	}
 }
 
 export type envNameContext = 'prod' | 'dev'
