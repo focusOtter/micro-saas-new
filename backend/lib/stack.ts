@@ -5,6 +5,8 @@ import { createAmplifyHosting } from './hosting/amplify'
 import { createSaasAuth } from './cognito/auth'
 import { createSaasPicsBucket } from './s3/bucket'
 import { createAmplifyGraphqlApi } from './api/appsync'
+import { createAddUserFunc } from './functions/addUserPostConfirmation/construct'
+import { CfnUserPool } from 'aws-cdk-lib/aws-cognito'
 
 export class MicroSaaSStack extends cdk.Stack {
 	constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -41,6 +43,24 @@ export class MicroSaaSStack extends cdk.Stack {
 			authenticatedRole: cognito.identityPool.authenticatedRole,
 			unauthenticatedRole: cognito.identityPool.unauthenticatedRole,
 		})
+
+		// Get the ARN of the UserTable. Amplify will suffix the word "Table" to the end of a GraphQL model type.
+		const userTable = amplifyGraphQLAPI.resources.cfnTables['UserTable']
+
+		const addUserFunc = createAddUserFunc(this, {
+			appName: context.appName,
+			stage: context.stage,
+			userDBARN: userTable.attrArn,
+			environmentVars: {
+				userDBTableName: userTable.tableName!,
+			},
+		})
+
+		//! Can't reference the function by reference because it will trigger a circular dependency (auth -> addUserFunc -> amplifyGraphQLAPI -> auth)
+		const l1Pool = cognito.userPool.node.defaultChild as CfnUserPool
+		l1Pool.lambdaConfig = {
+			postConfirmation: `arn:aws:lambda:${this.region}:${this.account}:function:${context.appName}-${context.stage}-addUserFunc`,
+		}
 
 		new cdk.CfnOutput(this, 'region', {
 			value: this.region,

@@ -10,8 +10,9 @@ import { envNameContext } from '../../cdk.context'
 type CreateSaasAuth = {
 	appName: string
 	stage: envNameContext
-	addUserPostConfirmation?: NodejsFunction
 }
+
+console.log('testing post confirmation deploy')
 
 export function createSaasAuth(scope: Construct, props: CreateSaasAuth) {
 	const userPool = new awsCognito.UserPool(
@@ -20,9 +21,6 @@ export function createSaasAuth(scope: Construct, props: CreateSaasAuth) {
 		{
 			userPoolName: `${props.appName}-${props.stage}-userpool`,
 			selfSignUpEnabled: true,
-			lambdaTriggers: {
-				postConfirmation: props.addUserPostConfirmation,
-			},
 			accountRecovery: awsCognito.AccountRecovery.PHONE_AND_EMAIL,
 			userVerification: {
 				emailStyle: awsCognito.VerificationEmailStyle.CODE,

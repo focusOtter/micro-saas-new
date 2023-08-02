@@ -8,7 +8,7 @@ import { envNameContext } from '../../../cdk.context'
 type CreateAddUserFuncProps = {
 	userDBARN: string
 	appName: string
-	env: envNameContext
+	stage: envNameContext
 	environmentVars: {
 		userDBTableName: string
 	}
@@ -19,9 +19,9 @@ export const createAddUserFunc = (
 ) => {
 	const addUserFunc = new NodejsFunction(
 		scope,
-		`${props.appName}-${props.env}-addUserFunc`,
+		`${props.appName}-${props.stage}-addUserFunc`,
 		{
-			functionName: `${props.appName}-${props.env}-addUserFunc`,
+			functionName: `${props.appName}-${props.stage}-addUserFunc`,
 			runtime: Runtime.NODEJS_16_X,
 			handler: 'handler',
 			entry: path.join(__dirname, `./main.ts`),
