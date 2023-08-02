@@ -9,8 +9,8 @@
 		"watch": "tsc -w",
 		"test": "jest",
 		"cdk": "cdk",
-		"codegen": "node utils/codegen.mjs",
-		"deploy:local": "npx aws-cdk deploy --profile=focus-otter-sandbox --outputs-file ../frontend/output.json && npm run codegen -- --profile=focus-otter-sandbox"
+		"deploy:local": "npx aws-cdk deploy --profile=focus-otter-sandbox --outputs-file ../frontend/output.json",
+		"postdeploy:local": "node utils/codegen.local.mjs"
 	},
 	"devDependencies": {
 		"@types/aws-lambda": "^8.10.119",
