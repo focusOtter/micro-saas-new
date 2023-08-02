@@ -1,10 +1,5 @@
 import { Construct } from 'constructs'
 import * as awsCognito from 'aws-cdk-lib/aws-cognito'
-import {
-	IdentityPool,
-	UserPoolAuthenticationProvider,
-} from '@aws-cdk/aws-cognito-identitypool-alpha'
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { envNameContext } from '../../cdk.context'
 
 type CreateSaasAuth = {
@@ -43,22 +38,10 @@ export function createSaasAuth(scope: Construct, props: CreateSaasAuth) {
 		{ userPool }
 	)
 
-	const identityPool = new IdentityPool(
-		scope,
-		`${props.appName}-${props.stage}-identityPool`,
-		{
-			identityPoolName: `${props.appName}-${props.stage}IdentityPool`,
-			allowUnauthenticatedIdentities: true,
-			authenticationProviders: {
-				userPools: [
-					new UserPoolAuthenticationProvider({
-						userPool: userPool,
-						userPoolClient: userPoolClient,
-					}),
-				],
-			},
-		}
-	)
+	const l1Pool = cognito.userPool.node.defaultChild as CfnUserPool
+	l1Pool.lambdaConfig = {
+		postConfirmation: `arn:aws:lambda:${this.region}:${this.account}:function:${context.appName}-addUserFunc`,
+	}
 
-	return { userPool, userPoolClient, identityPool }
+	return { userPool, userPoolClient }
 }

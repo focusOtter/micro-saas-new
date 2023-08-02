@@ -1,17 +1,18 @@
-import * as aws_iam from 'aws-cdk-lib/aws-iam'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { Construct } from 'constructs'
 import path = require('path')
 import { envNameContext } from '../../../cdk.context'
 
+import { UserPool } from 'aws-cdk-lib/aws-cognito'
+
 type CreateAddUserFuncProps = {
-	userDBARN: string
 	appName: string
 	stage: envNameContext
 	environmentVars: {
 		userDBTableName: string
 	}
+	userTableArn: string
 }
 export const createAddUserFunc = (
 	scope: Construct,
@@ -25,17 +26,9 @@ export const createAddUserFunc = (
 			runtime: Runtime.NODEJS_16_X,
 			handler: 'handler',
 			entry: path.join(__dirname, `./main.ts`),
-			environment: {
-				UserTableName: props.environmentVars.userDBTableName,
-			},
+			environment: props.environmentVars,
 		}
 	)
 
-	addUserFunc.addToRolePolicy(
-		new aws_iam.PolicyStatement({
-			actions: ['dynamodb:PutItem'],
-			resources: [props.userDBARN],
-		})
-	)
 	return addUserFunc
 }
