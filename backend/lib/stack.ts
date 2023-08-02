@@ -78,6 +78,10 @@ export class MicroSaaSStack extends cdk.Stack {
 			value: bucket.bucketName,
 		})
 
+		new cdk.CfnOutput(this, 'awsappsyncapiId', {
+			value: amplifyGraphQLAPI.resources.cfnGraphqlApi.attrApiId,
+		})
+
 		new cdk.CfnOutput(this, 'aws_appsync_authenticationType', {
 			value: 'AMAZON_COGNITO_USER_POOLS',
 		})
