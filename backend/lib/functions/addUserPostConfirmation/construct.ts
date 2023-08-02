@@ -4,15 +4,13 @@ import { Construct } from 'constructs'
 import path = require('path')
 import { envNameContext } from '../../../cdk.context'
 
-import { UserPool } from 'aws-cdk-lib/aws-cognito'
-
 type CreateAddUserFuncProps = {
 	appName: string
 	stage: envNameContext
+	userTableArn: string
 	environmentVars: {
 		userDBTableName: string
 	}
-	userTableArn: string
 }
 export const createAddUserFunc = (
 	scope: Construct,
