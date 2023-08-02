@@ -3,10 +3,10 @@ import dynamic from 'next/dynamic'
 import { useState } from 'react'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
-import { RecipeCreateInput } from '@/src/API'
+import { CreateRecipeInput } from '@/graphql/API'
 
 type RecipeFormProps = {
-	handleFormSubmit: (recipeData: RecipeCreateInput) => void
+	handleFormSubmit: (recipeData: any) => void
 }
 
 export const RecipeForm = ({ handleFormSubmit }: RecipeFormProps) => {
