@@ -1,13 +1,28 @@
-import { Inter } from 'next/font/google'
+import { FeatureList } from '@/components/FeatureList'
+import { Testimonial } from '@/components/Testimonial'
+import { checkCurrentUser } from '@/helpers/checkCurrentUser'
+import { useEffect, useState } from 'react'
+import { Footer } from '../components/Footer'
+import { Hero } from '../components/Hero'
+import { Navbar } from '../components/Navbar'
 
-const inter = Inter({ subsets: ['latin'] })
+function Home() {
+	const [isAuthPage, setIsAuthPage] = useState<boolean | undefined>()
+	useEffect(() => {
+		checkCurrentUser().then((user) => {
+			setIsAuthPage(user ? true : false)
+		})
+	}, [])
 
-export default function Home() {
 	return (
-		<main
-			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-		>
-			Hello
-		</main>
+		<>
+			<Navbar isAuthPage={isAuthPage} />
+			<Hero />
+			<FeatureList />
+			<Testimonial />
+			<Footer />
+		</>
 	)
 }
+
+export default Home

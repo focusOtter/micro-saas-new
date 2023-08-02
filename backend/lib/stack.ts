@@ -84,6 +84,10 @@ export class MicroSaaSStack extends cdk.Stack {
 			value: amplifyGraphQLAPI.resources.cfnGraphqlApi.attrApiId,
 		})
 
+		new cdk.CfnOutput(this, 'awsappsyncapiURL', {
+			value: amplifyGraphQLAPI.resources.cfnGraphqlApi.attrGraphQlUrl,
+		})
+
 		new cdk.CfnOutput(this, 'aws_appsync_authenticationType', {
 			value: 'AMAZON_COGNITO_USER_POOLS',
 		})
