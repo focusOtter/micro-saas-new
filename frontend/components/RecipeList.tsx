@@ -1,4 +1,4 @@
-import { Recipe } from '@/src/API'
+import { Recipe } from '@/graphql/API'
 import { CldImage } from 'next-cloudinary'
 
 export type RecipeListProps = {

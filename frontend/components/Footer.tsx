@@ -15,7 +15,7 @@ export const Footer = () => {
 				</svg>
 				<p className="font-bold">
 					Focus Otter Solutions <br />
-					Providing reliable tech since since ChatGPT was a thing.
+					Providing reliable tech since ChatGPT was a thing
 				</p>
 				<p>Copyright © 2023 - All right reserved</p>
 			</div>

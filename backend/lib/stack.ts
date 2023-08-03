@@ -28,6 +28,12 @@ export class MicroSaaSStack extends cdk.Stack {
 		const cognito = createSaasAuth(this, {
 			appName: context.appName,
 			stage: context.stage,
+			google: {
+				clientSecretName: context.auth.google.clientSecretName,
+				clientId: context.auth.google.clientId,
+				callbackUrls: context.auth.google.callbackUrls,
+				logoutUrls: context.auth.google.logoutUrls,
+			},
 		})
 
 		const bucket = createSaasPicsBucket(this, {
@@ -50,8 +56,10 @@ export class MicroSaaSStack extends cdk.Stack {
 		const addUserFunc = createAddUserFunc(this, {
 			appName: context.appName,
 			stage: context.stage,
+			region: context.region,
 			functionName: context.functions.postConfirmation.name,
 			userTableArn: userTable.attrArn,
+			account: context.account,
 			environmentVars: {
 				USER_TABLE_NAME: userTable.tableName!,
 				STRIPE_SECRET_NAME: context.functions.postConfirmation.stripeSecretName,
@@ -75,6 +83,12 @@ export class MicroSaaSStack extends cdk.Stack {
 		})
 		new cdk.CfnOutput(this, 'identityPoolId', {
 			value: cognito.identityPool.identityPoolId,
+		})
+		new cdk.CfnOutput(this, 'UserPoolDomainUrl', {
+			value: `${cognito.userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
+		})
+		new cdk.CfnOutput(this, 'AuthorizedRedirectUserPoolDomainURL', {
+			value: `https://${cognito.userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com/oauth2/idpresponse`,
 		})
 		new cdk.CfnOutput(this, 'bucket', {
 			value: bucket.bucketName,

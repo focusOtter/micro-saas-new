@@ -4,13 +4,18 @@ import {
 	IdentityPool,
 	UserPoolAuthenticationProvider,
 } from '@aws-cdk/aws-cognito-identitypool-alpha'
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { envNameContext } from '../../cdk.context'
+import { Secret } from 'aws-cdk-lib/aws-secretsmanager'
 
 type CreateSaasAuth = {
 	appName: string
 	stage: envNameContext
-	addUserPostConfirmation?: NodejsFunction
+	google: {
+		clientSecretName: string
+		clientId: string
+		callbackUrls: string[]
+		logoutUrls: string[]
+	}
 }
 
 export function createSaasAuth(scope: Construct, props: CreateSaasAuth) {
@@ -20,9 +25,6 @@ export function createSaasAuth(scope: Construct, props: CreateSaasAuth) {
 		{
 			userPoolName: `${props.appName}-${props.stage}-userpool`,
 			selfSignUpEnabled: true,
-			lambdaTriggers: {
-				postConfirmation: props.addUserPostConfirmation,
-			},
 			accountRecovery: awsCognito.AccountRecovery.PHONE_AND_EMAIL,
 			userVerification: {
 				emailStyle: awsCognito.VerificationEmailStyle.CODE,
@@ -39,10 +41,58 @@ export function createSaasAuth(scope: Construct, props: CreateSaasAuth) {
 		}
 	)
 
+	// Define a user pool domain that will be used to host the sign in page (google needs this url)
+	const userPoolDomain = new awsCognito.UserPoolDomain(
+		scope,
+		`${props.appName}-${props.stage}-userpooldomain`,
+		{
+			userPool,
+			cognitoDomain: {
+				domainPrefix: `${props.appName}-${props.stage}`, // Specify a unique domain prefix
+			},
+		}
+	)
+
+	// create a google identity provider.
+	// when users sign up with google, they will be added to the userpool
+	const googleSecretValue = Secret.fromSecretNameV2(
+		scope,
+		`${props.appName}-${props.stage}-googleclientsecret`,
+		props.google.clientSecretName
+	)
+
+	const googleProvider = new awsCognito.UserPoolIdentityProviderGoogle(
+		scope,
+		`${props.appName}-${props.stage}-googleprovider`,
+		{
+			clientId: props.google.clientId,
+			clientSecretValue: googleSecretValue.secretValue, // Replace with your Google Client Secret
+			scopes: ['openid', 'profile', 'email'],
+			attributeMapping: {
+				email: awsCognito.ProviderAttribute.GOOGLE_EMAIL,
+				givenName: awsCognito.ProviderAttribute.GOOGLE_GIVEN_NAME,
+				familyName: awsCognito.ProviderAttribute.GOOGLE_FAMILY_NAME,
+				phoneNumber: awsCognito.ProviderAttribute.GOOGLE_PHONE_NUMBERS,
+			},
+			userPool,
+		}
+	)
+
+	userPool.registerIdentityProvider(googleProvider)
+
 	const userPoolClient = new awsCognito.UserPoolClient(
 		scope,
 		`${props.appName}-${props.stage}-userpoolClient`,
-		{ userPool }
+		{
+			userPool,
+			oAuth: {
+				flows: {
+					authorizationCodeGrant: true,
+				},
+				callbackUrls: props.google.callbackUrls, // Replace with your actual callback URL
+				logoutUrls: props.google.logoutUrls, // Replace with your actual logout URL
+			},
+		}
 	)
 
 	const identityPool = new IdentityPool(
@@ -62,5 +112,5 @@ export function createSaasAuth(scope: Construct, props: CreateSaasAuth) {
 		}
 	)
 
-	return { userPool, userPoolClient, identityPool }
+	return { userPool, userPoolClient, identityPool, userPoolDomain }
 }

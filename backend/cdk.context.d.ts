@@ -11,12 +11,22 @@ export type CDKContext = {
 	region: string
 	github: githubContext
 	functions: functionsContext
+	auth: authContext
 }
 
 type functionsContext = {
 	postConfirmation: {
 		name: string
 		stripeSecretName: string
+	}
+}
+
+type authContext = {
+	google: {
+		clientSecretName: string
+		clientId: string
+		callbackUrls: string[]
+		logoutUrls: string[]
 	}
 }
 

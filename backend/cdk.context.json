@@ -21,6 +21,14 @@
 					"name": "addUserFunc",
 					"stripeSecretName": "microsaas-stripe-key-prod"
 				}
+			},
+			"auth": {
+				"google": {
+					"clientSecretName": "GoogleClientSecret",
+					"clientId": "721811598969-2r3o75jkvboj7ioh7m29d91qh26b56ih.apps.googleusercontent.com",
+					"callbackUrls": ["http://localhost:3000/"],
+					"logoutUrls": ["http://localhost:3000/"]
+				}
 			}
 		},
 		{
@@ -29,7 +37,16 @@
 			"region": "us-east-1",
 			"functions": {
 				"postConfirmation": {
+					"name": "addUserFunc",
 					"stripeSecretName": "microsaas-stripe-key-dev"
+				}
+			},
+			"auth": {
+				"google": {
+					"clientSecretName": "GoogleClientSecret",
+					"clientId": "721811598969-2r3o75jkvboj7ioh7m29d91qh26b56ih.apps.googleusercontent.com",
+					"callbackUrls": ["http://localhost:3000/"],
+					"logoutUrls": ["http://localhost:3000/"]
 				}
 			}
 		}

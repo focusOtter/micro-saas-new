@@ -1,5 +1,5 @@
 import Script from 'next/script'
-
+import { AmplifyUser } from '@aws-amplify/ui'
 declare global {
 	namespace JSX {
 		interface IntrinsicElements {
@@ -9,13 +9,7 @@ declare global {
 }
 
 type PricingTableProps = {
-	user: {
-		username: string
-		attributes: {
-			email: string
-			sub: string
-		}
-	}
+	user: AmplifyUser
 }
 
 export const PricingTable = ({ user }: PricingTableProps) => {
@@ -26,8 +20,8 @@ export const PricingTable = ({ user }: PricingTableProps) => {
 			<stripe-pricing-table
 				pricing-table-id={process.env.NEXT_PUBLIC_stripePricingTableID}
 				publishable-key={process.env.NEXT_PUBLIC_stripePublishableKey}
-				client-reference-id={`${user.attributes.sub}__${user.username}`}
-				customer-email={user.attributes.email}
+				client-reference-id={`${user.attributes?.sub}__${user.username}`}
+				customer-email={user.attributes?.email}
 			></stripe-pricing-table>
 		</>
 	)
