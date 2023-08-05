@@ -2,6 +2,9 @@ import backendOutput from './output.json'
 
 export const config = {
 	aws_project_region: backendOutput.MicroSaaSStack.region,
+	aws_appsync_graphqlEndpoint: backendOutput.MicroSaaSStack.awsappsyncapiURL,
+	aws_appsync_region: backendOutput.MicroSaaSStack.region,
+	aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
 	Auth: {
 		region: backendOutput.MicroSaaSStack.region,
 		userPoolId: backendOutput.MicroSaaSStack.userPoolId,
@@ -27,7 +30,4 @@ export const config = {
 			region: backendOutput.MicroSaaSStack.region,
 		},
 	},
-	aws_appsync_graphqlEndpoint: backendOutput.MicroSaaSStack.awsappsyncapiURL,
-	aws_appsync_region: backendOutput.MicroSaaSStack.region,
-	aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
 }

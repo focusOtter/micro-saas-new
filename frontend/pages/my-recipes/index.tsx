@@ -6,7 +6,7 @@ import { listRecipes } from '../../src/graphql/queries'
 import { ListRecipesQuery } from '@/src/API'
 import { GraphQLResult } from '@aws-amplify/api-graphql'
 import { BillingPortalLink } from '@/components/BillingPortalLink'
-import { Navbar } from '@/components/Navbar'
+import { Navbar } from '@/components/AuthNavbar'
 import { Footer } from '@/components/Footer'
 import { Recipe } from '@/src/API'
 

@@ -1,8 +1,8 @@
 import { Auth } from 'aws-amplify'
-import { User } from './types'
+import { AmplifyUser } from '@aws-amplify/ui'
 
-export const checkCurrentUser = async (): Promise<User | null> => {
-	let user
+export const checkCurrentUser = async (): Promise<AmplifyUser | null> => {
+	let user: AmplifyUser | null = null
 	try {
 		user = await Auth.currentAuthenticatedUser()
 	} catch (e) {

@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/Navbar'
+import { Navbar } from '@/components/AuthNavbar'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 
 const Profile = () => {

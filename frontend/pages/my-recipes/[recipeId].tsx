@@ -1,5 +1,5 @@
 import { Footer } from '@/components/Footer'
-import { Navbar } from '@/components/Navbar'
+import { Navbar } from '@/components/AuthNavbar'
 import { getRecipe } from '@/src/graphql/queries'
 import { API } from 'aws-amplify'
 import { useRouter } from 'next/router'

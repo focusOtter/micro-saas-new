@@ -1,13 +1,22 @@
 import Link from 'next/link'
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
+import { Button, useAuthenticator } from '@aws-amplify/ui-react'
 
 type NavBarProps = {
 	isAuthPage?: boolean
 }
 
-export const Navbar = ({ isAuthPage }: NavBarProps) => {
+export const AuthNavbar = ({ isAuthPage }: NavBarProps) => {
 	const router = useRouter()
+	const { route, signOut } = useAuthenticator((context) => [
+		context.route,
+		context.signOut,
+	])
+	function logOut() {
+		signOut()
+		router.push('/login')
+	}
 	return (
 		<div className="navbar bg-yellow-50">
 			<div className="flex-1">
@@ -30,21 +39,11 @@ export const Navbar = ({ isAuthPage }: NavBarProps) => {
 									Profile
 								</Link>
 							</li>
-							<li>
-								<button
-									onClick={() =>
-										Auth.signOut().then(() => {
-											if (router.pathname !== '/') {
-												router.push('/')
-											} else {
-												window.location.reload()
-											}
-										})
-									}
-								>
-									Logout
-								</button>
-							</li>
+							{route !== 'authenticated' ? (
+								<Button onClick={() => router.push('/login')}>Login</Button>
+							) : (
+								<Button onClick={() => logOut()}>Logout</Button>
+							)}
 						</>
 					)}
 					<li>
