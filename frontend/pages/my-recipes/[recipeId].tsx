@@ -1,12 +1,11 @@
 import { Footer } from '@/components/Footer'
-import { Navbar } from '@/components/AuthNavbar'
-import { getRecipe } from '@/src/graphql/queries'
+import { getRecipe } from '@/graphql/queries'
 import { API } from 'aws-amplify'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Recipe } from '../../src/API'
+import { Recipe, GetRecipeQuery } from '@/graphql/API'
 import { GraphQLResult } from '@aws-amplify/api'
-import { GetRecipeQuery } from '@/src/API'
+import { RequireAuth } from '@/components/RequireAuth'
 
 //this page will fetch a recipe and then display it.
 
@@ -35,8 +34,7 @@ const RecipePage = () => {
 		fetchRecipe()
 	}, [router.query.recipeId])
 	return (
-		<>
-			<Navbar />
+		<RequireAuth>
 			{currRecipe && (
 				<div>
 					<h1>{currRecipe.title}</h1>
@@ -47,8 +45,7 @@ const RecipePage = () => {
 					<div dangerouslySetInnerHTML={{ __html: currRecipe.stepsText }} />
 				</div>
 			)}
-			<Footer />
-		</>
+		</RequireAuth>
 	)
 }
 

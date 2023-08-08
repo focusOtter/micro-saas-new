@@ -1,15 +1,11 @@
 import Link from 'next/link'
-import { Auth } from 'aws-amplify'
+
 import { useRouter } from 'next/router'
 import { Button, useAuthenticator } from '@aws-amplify/ui-react'
 
-type NavBarProps = {
-	isAuthPage?: boolean
-}
-
-export const AuthNavbar = ({ isAuthPage }: NavBarProps) => {
+export const AuthNavbar = () => {
 	const router = useRouter()
-	const { route, signOut } = useAuthenticator((context) => [
+	const { route, signOut, user } = useAuthenticator((context) => [
 		context.route,
 		context.signOut,
 	])
@@ -26,7 +22,7 @@ export const AuthNavbar = ({ isAuthPage }: NavBarProps) => {
 			</div>
 			<div className="flex-none">
 				<ul className="menu menu-horizontal px-1">
-					{isAuthPage && (
+					{user && (
 						<>
 							<li>
 								<Link href={'/my-recipes/'}>My Recipes</Link>
@@ -46,9 +42,7 @@ export const AuthNavbar = ({ isAuthPage }: NavBarProps) => {
 							)}
 						</>
 					)}
-					<li>
-						{!isAuthPage && <Link href={'/my-recipes/'}>My Recipes</Link>}
-					</li>
+					<li>{!user && <Link href={'/my-recipes/'}>My Recipes</Link>}</li>
 				</ul>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
 
 export type CreateRecipeInput = {
   id?: string | null,
-  owner: string,
+  owner?: string | null,
   coverImage: string,
   title: string,
   description: string,
@@ -81,7 +81,7 @@ export type ModelIntInput = {
 export type Recipe = {
   __typename: "Recipe",
   id: string,
-  owner: string,
+  owner?: string | null,
   coverImage: string,
   title: string,
   description: string,
@@ -285,7 +285,7 @@ export type CreateRecipeMutation = {
   createRecipe?:  {
     __typename: "Recipe",
     id: string,
-    owner: string,
+    owner?: string | null,
     coverImage: string,
     title: string,
     description: string,
@@ -306,7 +306,7 @@ export type UpdateRecipeMutation = {
   updateRecipe?:  {
     __typename: "Recipe",
     id: string,
-    owner: string,
+    owner?: string | null,
     coverImage: string,
     title: string,
     description: string,
@@ -327,7 +327,7 @@ export type DeleteRecipeMutation = {
   deleteRecipe?:  {
     __typename: "Recipe",
     id: string,
-    owner: string,
+    owner?: string | null,
     coverImage: string,
     title: string,
     description: string,
@@ -407,7 +407,7 @@ export type GetRecipeQuery = {
   getRecipe?:  {
     __typename: "Recipe",
     id: string,
-    owner: string,
+    owner?: string | null,
     coverImage: string,
     title: string,
     description: string,
@@ -431,7 +431,7 @@ export type ListRecipesQuery = {
     items:  Array< {
       __typename: "Recipe",
       id: string,
-      owner: string,
+      owner?: string | null,
       coverImage: string,
       title: string,
       description: string,
@@ -498,7 +498,7 @@ export type OnCreateRecipeSubscription = {
   onCreateRecipe?:  {
     __typename: "Recipe",
     id: string,
-    owner: string,
+    owner?: string | null,
     coverImage: string,
     title: string,
     description: string,
@@ -519,7 +519,7 @@ export type OnUpdateRecipeSubscription = {
   onUpdateRecipe?:  {
     __typename: "Recipe",
     id: string,
-    owner: string,
+    owner?: string | null,
     coverImage: string,
     title: string,
     description: string,
@@ -540,7 +540,7 @@ export type OnDeleteRecipeSubscription = {
   onDeleteRecipe?:  {
     __typename: "Recipe",
     id: string,
-    owner: string,
+    owner?: string | null,
     coverImage: string,
     title: string,
     description: string,

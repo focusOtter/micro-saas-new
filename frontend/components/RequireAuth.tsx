@@ -12,11 +12,9 @@ export function RequireAuth({ children }: RequireAuthProps) {
 	console.log(route)
 	useEffect(() => {
 		if (route !== 'authenticated') {
-			router.pathname === '/' ? router.push('/login') : router.push('/')
+			router.push('/login?redirectTo=' + router.pathname)
 		}
 	}, [route, router])
-	// if (route !== 'authenticated') {
-	// 	router.pathname === '/' ? router.push('/login') : router.push('/')
-	// }
+
 	return children
 }

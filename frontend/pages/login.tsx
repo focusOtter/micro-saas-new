@@ -1,23 +1,24 @@
-// components/Login.js
 import { useEffect } from 'react'
-
 import { Authenticator, useAuthenticator, View } from '@aws-amplify/ui-react'
 import '@aws-amplify/ui-react/styles.css'
 import { useRouter } from 'next/router'
 
 export default function Login() {
-	const { back } = useRouter()
-
+	const router = useRouter()
+	const intendedRoute = (router.query.redirectTo || '/') as string
 	const { route } = useAuthenticator((context) => [context.route])
 
 	useEffect(() => {
 		if (route === 'authenticated') {
-			back()
+			router.push(intendedRoute)
 		}
-	}, [route, back])
+	}, [router, route, intendedRoute])
 	return (
 		<View className="auth-wrapper">
-			<Authenticator></Authenticator>
+			<Authenticator
+				signUpAttributes={['email']}
+				socialProviders={['google']}
+			></Authenticator>
 		</View>
 	)
 }

@@ -1,31 +1,16 @@
-import { Footer } from '@/components/Footer'
-import { Navbar } from '@/components/AuthNavbar'
 import { PricingTable } from '@/components/PricingTable'
-import { Authenticator } from '@aws-amplify/ui-react'
+import { RequireAuth } from '@/components/RequireAuth'
+import { useAuthenticator } from '@aws-amplify/ui-react'
 
 function PricingPage() {
 	// Display a Stripe Pricing page
 	// In dev, they see a confirmation screen.
 	// In prod, they are routed to the app
-
+	const { user } = useAuthenticator((context) => [context.user])
 	return (
-		<>
-			<div className="mb-4">
-				<Navbar />
-			</div>
-			<Authenticator socialProviders={['google']} signUpAttributes={['email']}>
-				{({ user, signOut }) => {
-					if (user) {
-						console.log('user', user)
-
-						//
-						return <PricingTable user={user} />
-					}
-					return <></>
-				}}
-			</Authenticator>
-			<Footer />
-		</>
+		<RequireAuth>
+			<PricingTable user={user} />
+		</RequireAuth>
 	)
 }
 

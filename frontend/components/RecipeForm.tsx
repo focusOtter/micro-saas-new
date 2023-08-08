@@ -1,9 +1,8 @@
-import { FileUploader } from '@aws-amplify/ui-react'
+import { StorageManager } from '@aws-amplify/ui-react-storage'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import 'react-quill/dist/quill.snow.css'
-import { CreateRecipeInput } from '@/graphql/API'
 
 type RecipeFormProps = {
 	handleFormSubmit: (recipeData: any) => void
@@ -16,38 +15,32 @@ export const RecipeForm = ({ handleFormSubmit }: RecipeFormProps) => {
 		String | undefined
 	>()
 
-	const handleFileUploadSuccess = (key: string) => {
-		console.log('the key', key)
-		setFileUploadKey(key)
+	const handleFileUploadSuccess = (key: string | undefined) => {
+		if (key) {
+			console.log('the key', key)
+			setFileUploadKey(key)
+		}
 	}
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		const formData = new FormData(event.currentTarget)
+
 		const title = formData.get('title')?.valueOf() as string
 		const description = formData.get('description')?.valueOf() as string
 		const servings = Number(formData.get('servings')?.valueOf()) as number
 		const ingredientsText = ingredientsValue as string
 		const stepsText = instructionsValue as string
-		const coverImage = fileUploadKey || 'hi-im-a-placeholder.png'
+		const coverImage = fileUploadKey
 
-		if (
-			title &&
-			description &&
-			servings &&
-			ingredientsText &&
-			stepsText &&
-			coverImage
-		) {
-			handleFormSubmit({
-				title,
-				description,
-				servings,
-				ingredientsText,
-				stepsText,
-				coverImage,
-			})
-		}
+		handleFormSubmit({
+			title,
+			description,
+			servings,
+			ingredientsText,
+			stepsText,
+			coverImage,
+		})
 	}
 
 	return (
@@ -56,12 +49,11 @@ export const RecipeForm = ({ handleFormSubmit }: RecipeFormProps) => {
 			className="form-control grid grid-cols-2 gap-4 max-w-xl m-auto mt-10"
 		>
 			<div className="col-span-2">
-				<FileUploader
-					accessLevel="public"
+				<StorageManager
+					accessLevel="protected"
 					acceptedFileTypes={['image/*']}
 					maxFileCount={1}
-					shouldAutoProceed
-					onSuccess={({ key }) => handleFileUploadSuccess(key)}
+					onUploadSuccess={({ key }) => handleFileUploadSuccess(key)}
 				/>
 			</div>
 
