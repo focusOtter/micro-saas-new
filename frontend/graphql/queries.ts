@@ -46,11 +46,10 @@ export const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       owner
-      stripeCustomerId
       username
+      stripeCustomerId
       email
-      profilePicture
-      displayName
+      recipeCount
       createdAt
       updatedAt
     }
@@ -66,11 +65,10 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         owner
-        stripeCustomerId
         username
+        stripeCustomerId
         email
-        profilePicture
-        displayName
+        recipeCount
         createdAt
         updatedAt
       }

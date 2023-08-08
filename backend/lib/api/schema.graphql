@@ -12,9 +12,9 @@ type Recipe @model @auth(rules: [{ allow: owner }]) {
 type User @model @auth(rules: [{ allow: owner }]) {
 	id: ID!
 	owner: String! @auth(rules: [{ allow: owner, operations: [read] }])
-	stripeCustomerId: String @auth(rules: [{ allow: owner, operations: [read] }])
 	username: String!
+	stripeCustomerId: String @auth(rules: [{ allow: owner, operations: [read] }])
 	email: AWSEmail!
-	profilePicture: AWSURL
-	displayName: String
+	# todo: add in `recipeCount: String!` for non-paid users can create 5 recipes, basic = unlimited and pro
+	recipeCount: Int!
 }

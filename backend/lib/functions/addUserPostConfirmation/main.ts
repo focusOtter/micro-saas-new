@@ -42,11 +42,13 @@ exports.handler = async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
 		Item: {
 			__typename: 'User',
 			id: event.request.userAttributes.sub,
+			owner: event.userName,
+			username: event.userName,
 			stripeCustomerId: customer.id,
 			createdAt: isoDate, // ex) 2023-02-16T16:07:14.189Z
 			updatedAt: isoDate,
-			username: event.userName,
 			email: event.request.userAttributes.email,
+			recipeCount: 0,
 		},
 	}
 

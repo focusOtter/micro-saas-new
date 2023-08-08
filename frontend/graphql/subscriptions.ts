@@ -67,11 +67,10 @@ export const onCreateUser = /* GraphQL */ `
     onCreateUser(filter: $filter, owner: $owner) {
       id
       owner
-      stripeCustomerId
       username
+      stripeCustomerId
       email
-      profilePicture
-      displayName
+      recipeCount
       createdAt
       updatedAt
     }
@@ -85,11 +84,10 @@ export const onUpdateUser = /* GraphQL */ `
     onUpdateUser(filter: $filter, owner: $owner) {
       id
       owner
-      stripeCustomerId
       username
+      stripeCustomerId
       email
-      profilePicture
-      displayName
+      recipeCount
       createdAt
       updatedAt
     }
@@ -103,11 +101,10 @@ export const onDeleteUser = /* GraphQL */ `
     onDeleteUser(filter: $filter, owner: $owner) {
       id
       owner
-      stripeCustomerId
       username
+      stripeCustomerId
       email
-      profilePicture
-      displayName
+      recipeCount
       createdAt
       updatedAt
     }

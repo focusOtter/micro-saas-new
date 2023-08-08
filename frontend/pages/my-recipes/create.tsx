@@ -8,21 +8,27 @@ import { API } from 'aws-amplify'
 import { createRecipe } from '@/graphql/mutations'
 import ReactConfetti from 'react-confetti'
 import { RequireAuth } from '@/components/RequireAuth'
+import { getUser } from '@/graphql/queries'
 
 const CreateRecipePage = () => {
 	const [showConfetti, setShowConfetti] = useState(false)
+	const { user } = useAuthenticator((context) => [context.user])
+	console.log({ user: user.attributes?.sub })
 	const handleFormSubmit = async (recipeData: CreateRecipeInput) => {
 		console.log(recipeData)
 		let res
 		try {
-			res = await API.graphql({
-				query: createRecipe,
-				variables: {
-					input: recipeData,
-				},
+			const userDetails = await API.graphql({
+				query: getUser,
+				variables: { id: user.attributes?.sub },
 			})
+			console.log({ userDetails })
+			// res = await API.graphql({
+			// 	query: createRecipe,
+			// 	variables: { input: recipeData },
+			// })
 
-			setShowConfetti(true)
+			// setShowConfetti(true)
 		} catch (err) {
 			console.log(err)
 		}
@@ -52,7 +58,6 @@ const CreateRecipePage = () => {
 					}}
 				/>
 			)}
-			<Footer />
 		</RequireAuth>
 	)
 }
