@@ -68,9 +68,6 @@ export function createAmplifyHosting(
 					status: amplify.RedirectStatus.NOT_FOUND_REWRITE,
 				},
 			],
-			environmentVariables: {
-				AMPLIFY_MONOREPO_APP_ROOT: 'frontend',
-			},
 		}
 	)
 

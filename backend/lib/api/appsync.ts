@@ -40,7 +40,7 @@ export function createAmplifyGraphqlApi(
 		}
 	)
 
-	api.resources.cfnGraphqlApi.xrayEnabled = true
+	api.resources.cfnResources.cfnGraphqlApi.xrayEnabled = true
 
 	return api
 }

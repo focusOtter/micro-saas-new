@@ -51,14 +51,14 @@ export class MicroSaaSStack extends cdk.Stack {
 		})
 
 		// Get the ARN of the UserTable. Amplify will suffix the word "Table" to the end of a GraphQL model type.
-		const userTable = amplifyGraphQLAPI.resources.cfnTables['UserTable']
+		const userTable = amplifyGraphQLAPI.resources.tables['UserTable']
 
 		const addUserFunc = createAddUserFunc(this, {
 			appName: context.appName,
 			stage: context.stage,
 			region: context.region,
 			functionName: context.functions.postConfirmation.name,
-			userTableArn: userTable.attrArn,
+			userTableArn: userTable.tableArn,
 			account: context.account,
 			environmentVars: {
 				USER_TABLE_NAME: userTable.tableName!,
@@ -95,11 +95,12 @@ export class MicroSaaSStack extends cdk.Stack {
 		})
 
 		new cdk.CfnOutput(this, 'awsappsyncapiId', {
-			value: amplifyGraphQLAPI.resources.cfnGraphqlApi.attrApiId,
+			value: amplifyGraphQLAPI.resources.graphqlApi.apiId,
 		})
 
 		new cdk.CfnOutput(this, 'awsappsyncapiURL', {
-			value: amplifyGraphQLAPI.resources.cfnGraphqlApi.attrGraphQlUrl,
+			value:
+				amplifyGraphQLAPI.resources.cfnResources.cfnGraphqlApi.attrGraphQlUrl,
 		})
 
 		new cdk.CfnOutput(this, 'aws_appsync_authenticationType', {

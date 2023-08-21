@@ -6,7 +6,7 @@ let profile = 'focus-otter-sandbox'
 // This script will get the schema from your API and generate the code for your app.
 function getSchemaAndGenerateCode(apiId) {
 	let command = `
-				cd ../frontend &&\
+				cd ../ &&\
         aws appsync get-introspection-schema --api-id ${apiId} --format JSON schema.json --profile ${profile} &&\
         npx @aws-amplify/cli codegen && cd ../backend
         `
