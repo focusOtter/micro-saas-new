@@ -1,23 +1,22 @@
 version: 1
 frontend:
-  buildpath:
-    phases:
-      preBuild:
-        commands:
-          - cd backend
-          - npm ci
-          - npx aws-cdk diff
-          - npx aws-cdk deploy --outputs-file ../output.json --require-approval never
-          - npm run codegen
-          - cd ..
-          - npm ci
-      build:
-        commands:
-          - npm run build
-    artifacts:
-      baseDirectory: '.next'
-      files:
-        - '**/*'
-    cache:
-      paths:
-        - node_modules/**/*
+  phases:
+    preBuild:
+      commands:
+        - cd backend
+        - npm ci
+        - npx aws-cdk diff
+        - npx aws-cdk deploy --outputs-file ../output.json --require-approval never
+        - npm run codegen
+        - cd ..
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: '.next'
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
