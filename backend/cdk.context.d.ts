@@ -5,7 +5,6 @@ export type CDKContext = {
 	account: string
 	appName: string
 	appDescription: string
-	frontendRootFolderName: string
 	stage: envNameContext
 	branchName: branchNameContext
 	region: string

@@ -9,7 +9,7 @@
 		"watch": "tsc -w",
 		"test": "jest",
 		"cdk": "cdk",
-		"deploy:local": "npx aws-cdk deploy --profile=focus-otter-sandbox --outputs-file ../frontend/output.json",
+		"deploy:local": "npx aws-cdk deploy --profile=focus-otter-sandbox --outputs-file ../output.json",
 		"postdeploy:local": "node utils/codegen.local.mjs",
 		"codegen": "node utils/codegen.mjs"
 	},

@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import config from '../../frontend/output.json' assert { type: 'json' }
+import config from '../../output.json' assert { type: 'json' }
 
 let profile = 'focus-otter-sandbox'
 

@@ -13,7 +13,6 @@ type AmplifyHostingProps = StackProps & {
 	ghOwner: string
 	repo: string
 	ghTokenName: string
-	frontendRootFolderName: string
 	environmentVariables?: { [name: string]: string }
 }
 

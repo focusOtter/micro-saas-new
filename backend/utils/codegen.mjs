@@ -1,10 +1,10 @@
 import { execSync } from 'child_process'
-import config from '../../frontend/output.json' assert { type: 'json' }
+import config from '../../output.json' assert { type: 'json' }
 
 // This script will get the schema from your API and generate the code for your app.
 function getSchemaAndGenerateCode(apiId) {
 	let command = `
-	cd ../frontend &&\
+	cd ../ &&\
 	aws appsync get-introspection-schema --api-id ${apiId} --format JSON schema.json &&\
 	npx @aws-amplify/cli codegen && cd ../backend
 	`

@@ -22,7 +22,6 @@ export class MicroSaaSStack extends cdk.Stack {
 			ghOwner: context.github.username,
 			repo: context.github.repo,
 			ghTokenName: context.github.tokenName,
-			frontendRootFolderName: context.frontendRootFolderName,
 		})
 
 		const cognito = createSaasAuth(this, {
@@ -50,7 +49,6 @@ export class MicroSaaSStack extends cdk.Stack {
 			unauthenticatedRole: cognito.identityPool.unauthenticatedRole,
 		})
 
-		// Get the ARN of the UserTable. Amplify will suffix the word "Table" to the end of a GraphQL model type.
 		const userTable = amplifyGraphQLAPI.resources.tables['User']
 
 		const addUserFunc = createAddUserFunc(this, {
