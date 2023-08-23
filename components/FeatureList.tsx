@@ -64,7 +64,7 @@ const FeatureItem = ({ featureContent }: FeatureItemProps) => {
 								{featureContent.description}
 							</p>
 							<dl className="mt-10 max-w-xl space-y-8 text-base leading-7  lg:max-w-none">
-								{featureContent.features.map((feature) => (
+								{featureContent?.features.map((feature) => (
 									<div key={feature.name} className="relative pl-9">
 										<dt className="inline font-semibold ">
 											<feature.icon
