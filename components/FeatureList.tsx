@@ -96,6 +96,7 @@ const FeatureItem = ({ featureContent }: FeatureItemProps) => {
 
 export const FeatureList = () => {
 	const featureListContent = [createRecipesContent]
+	console.log(featureListContent)
 	return (
 		<>
 			{featureListContent.map((featureContent) => (

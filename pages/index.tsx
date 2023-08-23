@@ -6,7 +6,7 @@ function Home() {
 	return (
 		<>
 			<Hero />
-			{/* <FeatureList /> */}
+			<FeatureList />
 			<Testimonial />
 		</>
 	)
