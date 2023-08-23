@@ -51,7 +51,7 @@ export class MicroSaaSStack extends cdk.Stack {
 		})
 
 		// Get the ARN of the UserTable. Amplify will suffix the word "Table" to the end of a GraphQL model type.
-		const userTable = amplifyGraphQLAPI.resources.tables['UserTable']
+		const userTable = amplifyGraphQLAPI.resources.tables['User']
 
 		const addUserFunc = createAddUserFunc(this, {
 			appName: context.appName,
