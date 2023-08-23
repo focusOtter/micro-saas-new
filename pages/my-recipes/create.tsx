@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { View, useAuthenticator } from '@aws-amplify/ui-react'
 import { useState } from 'react'
 import { RecipeForm } from '@/components/RecipeForm'
-import { Footer } from '@/components/Footer'
 import { CreateRecipeInput } from '@/graphql/API'
 import { API } from 'aws-amplify'
 import { createRecipe } from '@/graphql/mutations'
@@ -13,7 +12,7 @@ import { getUser } from '@/graphql/queries'
 const CreateRecipePage = () => {
 	const [showConfetti, setShowConfetti] = useState(false)
 	const { user } = useAuthenticator((context) => [context.user])
-	console.log({ user: user.attributes?.sub })
+
 	const handleFormSubmit = async (recipeData: CreateRecipeInput) => {
 		console.log(recipeData)
 		let res
